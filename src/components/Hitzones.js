@@ -1,6 +1,6 @@
 import React from "react";
 
-class Hitzone extends React.Component {
+class Hitzones extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -43,4 +43,4 @@ class Hitzone extends React.Component {
     }
 }
 
-export default Hitzone;
+export default Hitzones;

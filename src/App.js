@@ -1,13 +1,14 @@
 import React from "react";
 import Skills from "./components/Skills";
 import Multipliers from "./components/Multipliers";
-import Hitzone from "./components/Hitzone";
+import Hitzones from "./components/Hitzones";
 import Results from "./components/Results";
 import './App.css';
 
 class App extends React.Component {
     state = {
-        finalAttackPower:0,
+        finalAttack:0,
+        finalElement: 0,
         skills:{
             attackBoost:[[true],[1,3],[1,6],[1,9],[1.05,7],[1.06,8],[1.08,9],[1.1,10]],
             longBarrelTuneUp:[[['LBG'],[1.05,0],[1.075,0]],    [['HBG'],[1.05,0],[1.075,0]]],
@@ -36,11 +37,6 @@ class App extends React.Component {
         }
     }
 
-    finalAttackPower(event) {
-        let finalAttackPower = event.target.value
-        console.log('ap000000000:', finalAttackPower)
-        this.setState({finalAttackPower :finalAttackPower})
-    }
 
     // componentDidUpdate(prevProps, prevState, snapshot) {
     //     this.finalAttackPower()
@@ -51,10 +47,15 @@ class App extends React.Component {
             <div className="ui container">
                 <h1 className="ui huge header center aligned purple">MH Rise: Sunbreak - Damage Calculator</h1>
                 <div className="ui grid">
-                    <Skills onChange={this.finalAttackPower} finalAttackPower={this.state.finalAttackPower} />
+                    <Skills
+                        finalAttack={this.state.finalAttack}
+                        finalElement={this.state.finalElement}
+                        skills={this.state.skills} />
                     <Multipliers  />
-                    <Hitzone />
-                    <Results />
+                    <Hitzones />
+                    <Results
+                        finalAttack={this.state.finalAttack}
+                        finalElement={this.state.finalElement} />
                 </div>
             </div>
         );

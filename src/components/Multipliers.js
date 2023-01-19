@@ -31,7 +31,8 @@ class Multipliers extends React.Component {
                     <tr><th>Elemental Damage </th><th>Multipliers</th></tr>
                     </thead>
                     <tbody>
-                    <tr><td>Element Exploit</td><td><input type="number" placeholder="1.1" step="0.025" min='0' max='1.15' size="6"/></td></tr>
+                    <tr><td>Elemental Reload</td><td><input type="number" placeholder="1.1" step="0.1" min='1' max='1.1' size="6"/></td></tr>
+                    <tr><td>Element Exploit</td><td><input type="number" placeholder="1.1" step="0.025" min='1' max='1.15' size="6"/></td></tr>
                     <tr><td>Ele. Exploit Rampage</td><td><input type="number" placeholder="1" step="0.15" min='1' max='1.15' size="6"/></td></tr>
                     <tr><td>Others</td><td><input type="number" placeholder="1" step="0.025" min='1' max='1.15' size="6"/></td></tr>
                     </tbody>
@@ -39,8 +40,10 @@ class Multipliers extends React.Component {
                     <tr><th>Total Damage </th><th>Multipliers</th></tr>
                     </thead>
                     <tbody>
-                    <tr><td>RapidFireUp</td><td><input type="number" placeholder="0.1" step="1" min='1' max='1.2' size="6"/></td></tr>
-                    <tr><td>Others</td><td><input type="number" placeholder="1" step="0.1" min='0' max='1.5' size="6"/></td></tr>
+                    <tr><td>RapidFireUp</td><td><input type="number" placeholder="1" step="0.1" min='1' max='1.3' size="6"/></td></tr>
+                    <tr><td>Others 1</td><td><input type="number" placeholder="1" step="0.05" min='1' max='1.5' size="6"/></td></tr>
+                    <tr><td>Others 2</td><td><input type="number" placeholder="1" step="0.1" min='1' max='1.5' size="6"/></td></tr>
+                    <tr><td>Others 3</td><td><input type="number" placeholder="1" step="0.1" min='1' max='1.5' size="6"/></td></tr>
                     </tbody>
                 </table>
             </div>
