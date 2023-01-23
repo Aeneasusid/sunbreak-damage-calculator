@@ -1,7 +1,7 @@
 import React from "react";
 import Skills from "./components/Skills";
 import Multipliers from "./components/Multipliers";
-import Hitzones from "./components/Hitzones";
+import HitZones from "./components/HitZones";
 import Results from "./components/Results";
 import './App.css';
 
@@ -9,19 +9,24 @@ class App extends React.Component {
     state = {
         finalAttack:0,
         finalElement: 0,
+        ammo:[['Element',16, 40],['Pierce Element',10, 22],['Pierce 2',7,0],['Normal 3',34,0],],
         skills:{
-            attackBoost:[[true],[1,3],[1,6],[1,9],[1.05,7],[1.06,8],[1.08,9],[1.1,10]],
-            longBarrelTuneUp:[[['LBG'],[1.05,0],[1.075,0]],    [['HBG'],[1.05,0],[1.075,0]]],
-            resentment:[[true],[1,5],[1,10],[1,15],[1,20],[1,25]],
-            peakPerformance:[[true],[1,5],[1,10],[1,20]],
-            resuscitate:[[true],[1,5],[1,10],[1,20]],
-            dereliction:[[[true],[0,25],[0,30],[0,35]],[[false],[0,10],[0,15],[0,20]]],
-            burst:[[[true],[0,8],[0,9],[0,10]],    [[false],[0,5],[0,5],[0,5]],     [1]],
-            elementAttack:[[false],[1,1],[1,1],[1,1],[1.05,1],[1.2,4]],
-            kushalaTeostraBlessing:[[false],[1.05,0],[1.1,0]],
-            strife:[[false],[1.05,0],[1.1,0],[1.15,0]],
-            bloodlust:[],
-            coalescene:[],
+            attackBoost:[['attackBoost'],[1,3],[1,6],[1,9],[1.05,7],[1.06,8],[1.08,9],[1.1,10]],
+            longBarrelTuneUp:[['longBarrelTuneUp'],[1.05,0],[1.075,0]],
+            resentment:[['resentment'],[1,5],[1,10],[1,15],[1,20],[1,25]],
+            peakPerformance:[['peakPerformance'],[1,5],[1,10],[1,20]],
+            resuscitate:[['resuscitate'],[1,5],[1,10],[1,20]],
+            derelictionBlue: [['dereliction'],[0,25],[0,30],[0,35]],
+            derelictionRed:[['dereliction'],[0,10],[0,15],[0,20]],
+            burst:[
+                [['burst'],[0,8],[0,9],[0,10]],
+                [['burst'],[0,5],[0,5],[0,5]],
+                ['']],
+            elementAttack:[['elementAttack'],[1,1],[1,1],[1,1],[1.05,1],[1.2,4]],
+            kushalaTeostraBlessing:[['kushalaTeostraBlessing'],[1.05,0],[1.1,0]],
+            strife:[['strife'],[1.05,0],[1.1,0],[1.15,0]],
+            // bloodlust:[],
+            // coalescene:[],
         },
         damageMultiplier: {
             criticalFirepower:[['raw'],[1, 1.1, 1.2, 1.3]],
@@ -37,6 +42,10 @@ class App extends React.Component {
         }
     }
 
+    handleUpdate = (finalAttack) => {
+        // console.log('update finalAttack in father-component, then to another son' )
+        this.setState({finalAttack: finalAttack})
+    }
 
     // componentDidUpdate(prevProps, prevState, snapshot) {
     //     this.finalAttackPower()
@@ -48,14 +57,16 @@ class App extends React.Component {
                 <h1 className="ui huge header center aligned purple">MH Rise: Sunbreak - Damage Calculator</h1>
                 <div className="ui grid">
                     <Skills
-                        finalAttack={this.state.finalAttack}
-                        finalElement={this.state.finalElement}
-                        skills={this.state.skills} />
+                        // finalAttack={this.state.finalAttack}
+                        // finalElement={this.state.finalElement}
+                        ammos={this.state.ammo}
+                        skills={this.state.skills}
+                        handleUpdate={this.handleUpdate}    />
                     <Multipliers  />
-                    <Hitzones />
+                    <HitZones />
                     <Results
-                        finalAttack={this.state.finalAttack}
-                        finalElement={this.state.finalElement} />
+                        sendValue={this.state.finalAttack}
+                    />
                 </div>
             </div>
         );

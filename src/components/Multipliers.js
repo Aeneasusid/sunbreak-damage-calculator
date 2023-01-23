@@ -40,7 +40,7 @@ class Multipliers extends React.Component {
                     <tr><th>Total Damage </th><th>Multipliers</th></tr>
                     </thead>
                     <tbody>
-                    <tr><td>RapidFireUp</td><td><input type="number" placeholder="1" step="0.1" min='1' max='1.3' size="6"/></td></tr>
+                    <tr><td>Rapid Fire Up</td><td><input type="number" placeholder="1" step="0.1" min='1' max='1.3' size="6"/></td></tr>
                     <tr><td>Others 1</td><td><input type="number" placeholder="1" step="0.05" min='1' max='1.5' size="6"/></td></tr>
                     <tr><td>Others 2</td><td><input type="number" placeholder="1" step="0.1" min='1' max='1.5' size="6"/></td></tr>
                     <tr><td>Others 3</td><td><input type="number" placeholder="1" step="0.1" min='1' max='1.5' size="6"/></td></tr>
