@@ -4,18 +4,16 @@ class Skills extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            // xxxMultiAdd:['xxx skill',1,0],
             attackMultiAdd: [],
             elementMultiAdd: [],
-            attackBoosts:0,
-            skills:[
-                ['attackBoost', 'longBarrelTuneUp', 'resentment', 'peakPerformance', 'resuscitate', 'derelictionBlue','burst'],
-                ['derelictionRed', 'burst', 'elementAttack', 'kushalaTeostraBlessing' ,'strife' ]
-            ]
+            elementValue:0,
+            attackBoost:0,
         }
     }
 
     handleAmmo = (e) => {
-        console.log('e',e.target.value)
+        console.log('e:',e.target.value)
         let ammo = this.props.ammo
         let ammoValues = []
         for (let i=0; i<ammo.length; i++) {
@@ -23,10 +21,11 @@ class Skills extends React.Component {
                 ammoValues = [ammo[i][1], ammo[i][2]]
             }
         }
-    }
-
-    handleInitialATK = () => {
-        this.calculator()
+        console.log('ammoValues:', ammoValues)
+        this.props.handleMotionValueUpdate(ammoValues[0])
+        // this.setState({elementValue:ammoValues[1]})
+        this.state.elementValue = ammoValues[1]
+        this.handleCalculator()
     }
 
     handleBoosts = () => {
@@ -36,60 +35,75 @@ class Skills extends React.Component {
         boosts += Number(document.getElementById('boost3').value)
         boosts += Number(document.getElementById('boost4').value)
         boosts += Number(document.getElementById('boost5').value)
-        this.setState({attackBoosts: boosts})
-        // console.log('000',this.state.attackBoosts)
-        this.calculator()
+        this.state.attackBoost = boosts
+        this.handleCalculator()
     }
 
-    skillsDetail = (skill, skillEffect, skillLevel) => {
-        let attackMultiAdd = this.state.attackMultiAdd
-        if (this.state.skills[0].includes(skill)) {
-            let flag = true
-            for (let i=0; i<attackMultiAdd.length; i++) {
-                if (attackMultiAdd[i][0] === skill) {
-                    if (skillLevel > 0) {
-                        attackMultiAdd.splice(i,1, [skill, skillEffect[0], skillEffect[1]])
-                    } else {
-                        attackMultiAdd.splice(i,1, [skill, 1, 0])
-                    }
-                    flag = false
-                }
-            }
-            if (flag) {
-                attackMultiAdd.push([skill, skillEffect[0], skillEffect[1]])
-            }
-        }
-        this.setState({attackMultiAdd: attackMultiAdd})
-        //
-
-    }
-
-    handleSkills = (e) => { // this one has to be an arrow function!!!
-        let skillEffects = undefined
+    handleSkills = (e) => {
+        let skillLevel = e.target.value
+        let skillName = undefined
         switch(e.target.parentNode.parentNode.firstChild.innerHTML) {
-            case 'Attack Boosts': skillEffects = this.props.skills.attackBoost; break;
-            case 'Long Barrel (Tune-up)': skillEffects = this.props.skills.longBarrelTuneUp; break;
-            case 'Resentment': skillEffects = this.props.skills.resentment; break;
-            case 'Peak Performance': skillEffects = this.props.skills.peakPerformance; break;
-            case 'Resuscitate': skillEffects = this.props.skills.resuscitate; break;
-            case 'Dereliction (Blue)': skillEffects = this.props.skills.derelictionBlue; break;
-            case 'Dereliction (Red)': skillEffects = this.props.skills.derelictionRed; break;
-            case 'Burst': skillEffects = this.props.skills.burst; break;
-            case 'Element Attack': skillEffects = this.props.skills.elementAttack; break;
-            case 'Kusha/Teo Blessing': skillEffects = this.props.skills.kushalaTeostraBlessing; break;
-            case 'Strife': skillEffects = this.props.skills.strife; break;
+            case 'Attack Boosts': skillName = this.props.attackSkills.attackBoost[0][0]; break;
+            case 'Long Barrel (Tune-up)': skillName = this.props.attackSkills.longBarrelTuneUp[0][0]; break;
+            case 'Resentment': skillName = this.props.attackSkills.resentment[0][0]; break;
+            case 'Peak Performance': skillName = this.props.attackSkills.peakPerformance[0][0]; break;
+            case 'Resuscitate': skillName = this.props.attackSkills.resuscitate[0][0]; break;
+            case 'Dereliction (Blue)': skillName = this.props.attackSkills.derelictionBlue[0][0]; break;
+            case 'Dereliction (Red)': skillName = this.props.elementSkills.derelictionRed[0][0]; break;
+            case 'Burst': skillName = this.props.elementSkills.burst[0][0]; break;
+            case 'Element Attack': skillName = this.props.elementSkills.elementAttack[0][0]; break;
+            case 'Kusha/Teo Blessing': skillName = this.props.elementSkills.kushalaTeostraBlessing[0][0]; break;
+            case 'Strife': skillName = this.props.elementSkills.strife[0][0]; break;
         }
-        if (skillEffects) {
-            let skill = skillEffects[0][0]
-            let skillLevel = e.target.value
-            let skillEffect = skillEffects[skillLevel]
-            console.log('skill:', skill, 'skillEffect:',skillEffect, 'skillLevel:', skillLevel)
-            this.skillsDetail(skill, skillEffect, skillLevel)
+        if (skillName) {
+            // handle Attack Skills
+            if (Object.keys(this.props.attackSkills).includes(skillName)) {
+                let attackMultiAdd = this.state.attackMultiAdd
+                let skillEffect = this.props.attackSkills[skillName]
+                // console.log('skillName:', skillName, 'skillEffect:',skillEffect, 'skillLevel:', skillLevel)
+                let flag = true
+                for (let i=0; i<attackMultiAdd.length; i++) {
+                    if (attackMultiAdd[i][0] === skillName) {
+                        if (skillLevel > 0) {
+                            attackMultiAdd.splice(i,1, [skillName, skillEffect[skillLevel][0], skillEffect[skillLevel][1]])
+                        } else {
+                            attackMultiAdd.splice(i,1, [skillName, 1, 0])
+                        }
+                        flag = false
+                    }
+                }
+                if (flag) {
+                    attackMultiAdd.push([skillName, skillEffect[skillLevel][0], skillEffect[skillLevel][1]])
+                }
+                this.setState({attackMultiAdd: attackMultiAdd})
+            }
+            // handle Element Skills
+            if (Object.keys(this.props.elementSkills).includes(skillName)) {
+                let elementMultiAdd = this.state.elementMultiAdd
+                let skillEffect = this.props.elementSkills[skillName]
+                // console.log('skillName:', skillName, 'skillEffect:',skillEffect, 'skillLevel:', skillLevel)
+                let flag = true
+                for (let i=0; i<elementMultiAdd.length; i++) {
+                    if (elementMultiAdd[i][0] === skillName) {
+                        if (skillLevel > 0) {
+                            elementMultiAdd.splice(i,1, [skillName, skillEffect[skillLevel][0], skillEffect[skillLevel][1]])
+                        } else {
+                            elementMultiAdd.splice(i,1, [skillName, 1, 0])
+                        }
+                        flag = false
+                    }
+                }
+                if (flag) {
+                    elementMultiAdd.push([skillName, skillEffect[skillLevel][0], skillEffect[skillLevel][1]])
+                }
+                this.setState({elementMultiAdd: elementMultiAdd})
+            }
         }
-        this.calculator()
+        this.handleCalculator()
     }
 
-    calculator = () => {
+    handleCalculator = () => {
+        // handle Attack Power
         let attackPower = document.getElementById('Weapon Raw Attack').valueAsNumber
         for (let x of this.state.attackMultiAdd) {
             attackPower *= x[1]
@@ -97,33 +111,52 @@ class Skills extends React.Component {
         for (let x of this.state.attackMultiAdd) {
             attackPower += x[2]
         }
-        console.log('cal',this.state.attackBoosts)
-        attackPower = Math.floor(attackPower) + this.state.attackBoosts
-        // console.log('update final attack power from son to father component:', attackPower)
-        this.props.handleUpdate(attackPower)
+        attackPower = Math.floor(attackPower + 0.1) + this.state.attackBoost
+        this.props.handleAttackUpdate(attackPower)
+
+        // handle Element Value
+        let elementValue = this.state.elementValue
+        if  (elementValue > 0) {
+            for (let x of this.state.elementMultiAdd) {
+                elementValue *= x[1]
+            }
+            for (let x of this.state.elementMultiAdd) {
+                elementValue += x[2]
+            }
+        }
+        elementValue = Math.floor(elementValue + 0.1)
+        this.props.hanldeElementUpdate(elementValue)
     }
 
     render() {
         return (
-            <div className="ui column labeled input four wide column" >
+            <div className="ui column labeled input five wide column" >
                 <table onChange={this.handleAmmo} className="ui compact table">
                     <thead>
                         <tr>
-                            <th>Ammo</th>
+                            <th>Ammo Type</th>
                             <th>
                                 <div className="ui action input">
                                         <select className="ui compact selection dropdown">
-                                            <option value="Element">Element</option>
-                                            <option value="Pierce Element">Pierce Element</option>
+                                            <option value=""> </option>
+                                            <option value="4 Elements">4 Elements</option>
+                                            <option value="4 Pierce Elements">4 Pierce Elements</option>
                                             <option value="Pierce 2">Pierce 2</option>
+                                            <option value="Pierce 3">Pierce 3</option>
+                                            <option value="Normal 2">Normal 2</option>
                                             <option value="Normal 3">Normal 3</option>
+                                            <option value="Spread 2">Spread 2</option>
+                                            <option value="Spread 3">Spread 3</option>
+                                            <option value="Shrapnel 2">Shrapnel 2</option>
+                                            <option value="Shrapnel 3">Shrapnel 3</option>
                                         </select>
                                 </div>
                             </th>
                         </tr>
                     </thead>
                 </table>
-                <table onChange={this.handleInitialATK} className="ui compact table">
+
+                <table onChange={this.handleCalculator} className="ui compact table">
                     <thead>
                     <tr>
                         <th>Weapon Raw Attack</th>
@@ -131,6 +164,7 @@ class Skills extends React.Component {
                     </tr>
                     </thead>
                 </table>
+
                 <table onChange={this.handleBoosts} className="ui compact table">
                     <thead><tr><th>Attack Boosts</th><th>Number</th></tr></thead>
                     <tbody>
@@ -141,6 +175,7 @@ class Skills extends React.Component {
                         <tr><td>Others</td><td><input id='boost5' type="number" placeholder="0" step="1" min='-20' max='30' size="6"/></td></tr>
                     </tbody>
                 </table>
+
                 <table onChange={this.handleSkills} className="ui compact table">
                     <thead><tr><th>Skills</th><th>Level</th></tr></thead>
                     <tbody id="skills">

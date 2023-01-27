@@ -19,6 +19,13 @@
 //
 // console.log(array1)
 
-if (undefined) {
-    console.log('111')
+// if (undefined) {
+//     console.log('111')
+// }
+
+let a = {
+    1:'2',
+    2: '4',
 }
+
+console.log('1:','1'*'2')

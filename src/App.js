@@ -1,7 +1,6 @@
 import React from "react";
 import Skills from "./components/Skills";
 import Multipliers from "./components/Multipliers";
-import HitZones from "./components/HitZones";
 import Results from "./components/Results";
 import './App.css';
 
@@ -9,25 +8,29 @@ class App extends React.Component {
     state = {
         finalAttack:0,
         finalElement: 0,
-        ammo:[['Element',16, 40],['Pierce Element',10, 22],['Pierce 2',7,0],['Normal 3',34,0],],
-        skills:{
+        motionValue:0,
+        ammo:[
+            ['4 Elements',16, 40],['4 Pierce Elements',10, 22],['Pierce 2',7,0],['Pierce 3',9,0],['Normal 2',22,0],['Normal 3',34,0],
+            ['Spread 2',7,0],['Spread 3',10,0],['Shrapnel 2',5,0],['Shrapnel 3',5,0],
+        ],
+        attackSkills:{
             attackBoost:[['attackBoost'],[1,3],[1,6],[1,9],[1.05,7],[1.06,8],[1.08,9],[1.1,10]],
             longBarrelTuneUp:[['longBarrelTuneUp'],[1.05,0],[1.075,0]],
             resentment:[['resentment'],[1,5],[1,10],[1,15],[1,20],[1,25]],
             peakPerformance:[['peakPerformance'],[1,5],[1,10],[1,20]],
             resuscitate:[['resuscitate'],[1,5],[1,10],[1,20]],
-            derelictionBlue: [['dereliction'],[0,25],[0,30],[0,35]],
-            derelictionRed:[['dereliction'],[0,10],[0,15],[0,20]],
-            burst:[
-                [['burst'],[0,8],[0,9],[0,10]],
-                [['burst'],[0,5],[0,5],[0,5]],
-                ['']],
-            elementAttack:[['elementAttack'],[1,1],[1,1],[1,1],[1.05,1],[1.2,4]],
+            derelictionBlue: [['dereliction'],[1,25],[1,30],[1,35]],
+            burst: [['burst'],[1,8],[1,9],[1,10]],
+        },
+        elementSkills:{
+            derelictionRed:[['dereliction'],[1,10],[1,15],[1,20]],
+            burst: [['burst'],[1,5],[1,5],[1,5]],
+            elementAttack:[['elementAttack'],[1,2],[1,3],[1.05,4],[1.1,4],[1.2,4]],
             kushalaTeostraBlessing:[['kushalaTeostraBlessing'],[1.05,0],[1.1,0]],
             strife:[['strife'],[1.05,0],[1.1,0],[1.15,0]],
-            // bloodlust:[],
-            // coalescene:[],
         },
+        criticalCorrection: [1, 1, 1],
+        damageMultipliers:[1,1],
         damageMultiplier: {
             criticalFirepower:[['raw'],[1, 1.1, 1.2, 1.3]],
             elementReload:[['element'],[1, 1.1]],
@@ -36,36 +39,44 @@ class App extends React.Component {
             rapidFireUp:[['total'], [1, 1.05, 1.1, 1.2]],
             ammoArrowBoost:[['total'], [1, 1.05, 1.1, 1.2]],
         },
-        criticalCorrection: {
-            criticalElement:[[20], [1, 1.05, 1.1, 1.15]],
-            criticalBoost:[[45], [1.25, 1.3, 1.35, 1.4]],
-        }
+
     }
 
-    handleUpdate = (finalAttack) => {
-        // console.log('update finalAttack in father-component, then to another son' )
-        this.setState({finalAttack: finalAttack})
-    }
+    handleAttackUpdate = finalAttack => this.setState({finalAttack: finalAttack})
+    handleElementUpdate = finalElement => this.setState({finalElement: finalElement})
+    handleMotionValueUpdate = motionValue => this.setState({motionValue: motionValue})
+    handleCriticalCorrectionUpdate = (expectation, boostMulti, elementMulti) => this.setState({criticalCorrection:[expectation, boostMulti, elementMulti]})
+    handleDamageMultipliersUpdate = (damageMultipliers) => this.setState({damageMultipliers:damageMultipliers})
 
-    // componentDidUpdate(prevProps, prevState, snapshot) {
-    //     this.finalAttackPower()
-    // }
+
+
+
+
+
 
     render() {
         return (
             <div className="ui container">
-                <h1 className="ui huge header center aligned purple">MH Rise: Sunbreak - Damage Calculator</h1>
+                <h1 className="ui huge header center aligned purple">MH Rise: Sunbreak - LBG Damage Calculator</h1>
                 <div className="ui grid">
                     <Skills
-                        // finalAttack={this.state.finalAttack}
-                        // finalElement={this.state.finalElement}
-                        ammos={this.state.ammo}
-                        skills={this.state.skills}
-                        handleUpdate={this.handleUpdate}    />
-                    <Multipliers  />
-                    <HitZones />
+                        ammo={this.state.ammo}
+                        attackSkills={this.state.attackSkills}
+                        elementSkills={this.state.elementSkills}
+                        handleAttackUpdate={this.handleAttackUpdate}
+                        hanldeElementUpdate={this.handleElementUpdate}
+                        handleMotionValueUpdate={this.handleMotionValueUpdate}
+                    />
+                    <Multipliers
+                        handleCriticalCorrectionUpdate={this.handleCriticalCorrectionUpdate}
+                        handleDamageMultipliersUpdate={this.handleDamageMultipliersUpdate}
+                    />
                     <Results
-                        sendValue={this.state.finalAttack}
+                        motionValue={this.state.motionValue}
+                        finalAttack={this.state.finalAttack}
+                        finalElement={this.state.finalElement}
+                        criticalCorrection={this.state.criticalCorrection}
+                        damageMultipliers={this.state.damageMultipliers}
                     />
                 </div>
             </div>
