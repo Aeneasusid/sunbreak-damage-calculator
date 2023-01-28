@@ -11,6 +11,10 @@ class App extends React.Component {
         motionValue:0,
         criticalCorrection: [1, 1, 1],// [expectation, boostMulti, elementMulti]
         damageMultipliers:[1,1],
+        rawHitZone:0.45,
+        elementHitZone:0.25,
+        rawDamage:1,
+        elementDamage:1,
         ammo:[
             ['4 Elements',16, 40],['4 Pierce Elements',10, 22],['Pierce 2',7,0],['Pierce 3',9,0],['Normal 2',22,0],['Normal 3',34,0],
             ['Spread 2',7,0],['Spread 3',10,0],['Shrapnel 2',5,0],['Shrapnel 3',5,0],
@@ -31,27 +35,46 @@ class App extends React.Component {
             kushalaTeostraBlessing:[['kushalaTeostraBlessing'],[1.05,0],[1.1,0]],
             strife:[['strife'],[1.05,0],[1.1,0],[1.15,0]],
         },
-        // damageMultiplier: {
-        //     criticalFirepower:[['raw'],[1, 1.1, 1.2, 1.3]],
-        //     elementReload:[['element'],[1, 1.1]],
-        //     elementExploit:[['element'], [1, 1.1, 1.125, 1.15]],
-        //     elementExploitRampage:[['element'], [1, 1.15]],
-        //     rapidFireUp:[['total'], [1, 1.05, 1.1, 1.2]],
-        //     ammoArrowBoost:[['total'], [1, 1.05, 1.1, 1.2]],
-        // },
     }
 
     handleAttackUpdate = finalAttack => this.setState({finalAttack: finalAttack})
     handleElementUpdate = finalElement => this.setState({finalElement: finalElement})
     handleMotionValueUpdate = motionValue => this.setState({motionValue: motionValue})
     handleCriticalCorrectionUpdate = (expectation, boostMulti, elementMulti) => this.setState({criticalCorrection:[expectation, boostMulti, elementMulti]})
-    handleDamageMultipliersUpdate = (damageMultipliers) => this.setState({damageMultipliers:damageMultipliers})
+    handleDamageMultipliersUpdate = damageMultipliers => this.setState({damageMultipliers:damageMultipliers})
+    handleRawHitZoneUpdate = (rawHitZone) => this.setState({rawHitZone: rawHitZone})
+    handleElementHitZoneUpdate = elementHitZone => this.setState({elementHitZone: elementHitZone})
 
+    handleElementDamage = () => {
+        let criticalExpectation = this.props.criticalCorrection[0]
+        let criticalElement = this.props.criticalCorrection[2]
+        let elementDamage = this.props.finalElement
+        let elementHitZone = this.state.elementHitZone
+        //
+        elementDamage *= this.props.finalAttack
+        elementDamage *= this.state.elementHitZone
+        elementDamage *= this.props.damageMultipliers[1]
+        //
 
+        // critical correction
+        elementDamage += elementDamage * (criticalElement - 1) * criticalExpectation
+        if (criticalExpectation === 0 || criticalExpectation === 1) {
+            elementDamage = Math.round(elementDamage/100)
+        } else {
+            elementDamage = Math.round(elementDamage) / 100
+        }
+        //
+        this.setState({elementDamage:elementDamage})
+    }
 
-
-
-
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        // console.log('final atk in Results:',this.state.finalAttack)
+        // console.log('final ele. in Results:',this.state.finalElement)
+        // console.log('Motion Value in Results:', this.state.motionValue)
+        // console.log('Critical Correction:',this.state.criticalCorrection)
+        // console.log('Damage Multips:',this.state.damageMultipliers)
+        // console.log('HitZones:',this.state.rawHitZone, this.state.elementHitZone)
+    }
 
     render() {
         return (
@@ -71,11 +94,12 @@ class App extends React.Component {
                         handleDamageMultipliersUpdate={this.handleDamageMultipliersUpdate}
                     />
                     <Results
-                        motionValue={this.state.motionValue}
                         finalAttack={this.state.finalAttack}
                         finalElement={this.state.finalElement}
-                        criticalCorrection={this.state.criticalCorrection}
-                        damageMultipliers={this.state.damageMultipliers}
+                        rawDamage={this.state.rawDamage}
+                        elementDamage={this.state.elementDamage}
+                        handleRawHitZoneUpdate={this.handleRawHitZoneUpdate}
+                        handleElementHitZoneUpdate={this.handleElementHitZoneUpdate}
                     />
                 </div>
             </div>

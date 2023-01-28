@@ -20,7 +20,7 @@ class Skills extends React.Component {
                 ammoValues = [ammo[i][1], ammo[i][2]]
             }
         }
-        console.log('ammoValues:', ammoValues)
+        // console.log('ammoValues:', ammoValues)
         this.props.handleMotionValueUpdate(ammoValues[0])
         this.setState({elementValue: ammoValues[1]}, () => {
             this.handleCalculator()
