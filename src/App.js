@@ -8,54 +8,74 @@ class App extends React.Component {
     state = {
         finalAttack:0,
         finalElement: 0,
-        motionValue:0,
+        motionValue:16,
+        rapidAmmoCorrection: [false, 0.7, 0.5],
         criticalCorrection: [1, 1, 1],// [expectation, boostMulti, elementMulti]
-        damageMultipliers:[1,1],
+        damageMultipliers:[1,[1,1,1],1],// [raw, [ele,exploit,rampage], total]
         rawHitZone:0.45,
         elementHitZone:0.25,
         rawDamage:1,
         elementDamage:1,
-        ammo:[
-            ['4 Elements',16, 40],['4 Pierce Elements',10, 22],['Pierce 2',7,0],['Pierce 3',9,0],['Normal 2',22,0],['Normal 3',34,0],
-            ['Spread 2',7,0],['Spread 3',10,0],['Shrapnel 2',5,0],['Shrapnel 3',5,0],
-        ],
-        attackSkills:{
-            attackBoost:[['attackBoost'],[1,3],[1,6],[1,9],[1.05,7],[1.06,8],[1.08,9],[1.1,10]],
-            longBarrelTuneUp:[['longBarrelTuneUp'],[1.05,0],[1.075,0]],
-            resentment:[['resentment'],[1,5],[1,10],[1,15],[1,20],[1,25]],
-            peakPerformance:[['peakPerformance'],[1,5],[1,10],[1,20]],
-            resuscitate:[['resuscitate'],[1,5],[1,10],[1,20]],
-            derelictionBlue: [['dereliction'],[1,25],[1,30],[1,35]],
-            burst: [['burst'],[1,8],[1,9],[1,10]],
-        },
-        elementSkills:{
-            derelictionRed:[['dereliction'],[1,10],[1,15],[1,20]],
-            burst: [['burst'],[1,5],[1,5],[1,5]],
-            elementAttack:[['elementAttack'],[1,2],[1,3],[1.05,4],[1.1,4],[1.2,4]],
-            kushalaTeostraBlessing:[['kushalaTeostraBlessing'],[1.05,0],[1.1,0]],
-            strife:[['strife'],[1.05,0],[1.1,0],[1.15,0]],
-        },
     }
 
-    handleAttackUpdate = finalAttack => this.setState({finalAttack: finalAttack})
-    handleElementUpdate = finalElement => this.setState({finalElement: finalElement})
+    handleAttackUpdate = finalAttack => {
+        this.setState({finalAttack: finalAttack}, () => {
+            this.handleElementDamage()
+        })
+    }
+
+    handleElementUpdate = finalElement => {
+        this.setState({finalElement: finalElement}, () => {
+            this.handleElementDamage()
+        })
+    }
+
     handleMotionValueUpdate = motionValue => this.setState({motionValue: motionValue})
-    handleCriticalCorrectionUpdate = (expectation, boostMulti, elementMulti) => this.setState({criticalCorrection:[expectation, boostMulti, elementMulti]})
-    handleDamageMultipliersUpdate = damageMultipliers => this.setState({damageMultipliers:damageMultipliers})
+
+    handleRapidFireUpdate = value => {
+        this.setState({rapidAmmoCorrection:[value, 0.7, 0.5]}, () => {
+            this.handleElementDamage()
+        })
+    }
+
+    handleCriticalCorrectionUpdate = (expectation, boostMulti, elementMulti) => {
+        this.setState({criticalCorrection:[expectation, boostMulti, elementMulti]}, () => {
+            this.handleElementDamage()
+        })
+    }
+
+    handleDamageMultipliersUpdate = damageMultipliers => {
+        this.setState({damageMultipliers:damageMultipliers}, () => {
+            this.handleElementDamage()
+        })
+    }
+
     handleRawHitZoneUpdate = (rawHitZone) => this.setState({rawHitZone: rawHitZone})
-    handleElementHitZoneUpdate = elementHitZone => this.setState({elementHitZone: elementHitZone})
+
+    handleElementHitZoneUpdate = elementHitZone => {
+        this.setState({elementHitZone: elementHitZone}, () => {
+            this.handleElementDamage()
+        })
+    }
+
 
     handleElementDamage = () => {
-        let criticalExpectation = this.props.criticalCorrection[0]
-        let criticalElement = this.props.criticalCorrection[2]
-        let elementDamage = this.props.finalElement
-        let elementHitZone = this.state.elementHitZone
-        //
-        elementDamage *= this.props.finalAttack
+        let criticalExpectation = this.state.criticalCorrection[0]
+        let criticalElement = this.state.criticalCorrection[2]
+        // atk, ele, hitZone
+        let elementDamage = this.state.finalElement
+        elementDamage *= this.state.finalAttack
         elementDamage *= this.state.elementHitZone
-        elementDamage *= this.props.damageMultipliers[1]
-        //
-
+        // ele-damage multi.
+        elementDamage *= this.state.damageMultipliers[1][0]
+        if (this.state.elementHitZone >= 0.20) {elementDamage *= this.state.damageMultipliers[1][1]}
+        if (this.state.elementHitZone >= 0.25) {elementDamage *= this.state.damageMultipliers[1][2]}
+        // total-damage multi.
+        elementDamage *= this.state.damageMultipliers[2]
+        // rapid fire correction
+        if (this.state.rapidAmmoCorrection[0] === 'Yes') {
+            elementDamage *= this.state.rapidAmmoCorrection[2]
+        }
         // critical correction
         elementDamage += elementDamage * (criticalElement - 1) * criticalExpectation
         if (criticalExpectation === 0 || criticalExpectation === 1) {
@@ -74,6 +94,7 @@ class App extends React.Component {
         // console.log('Critical Correction:',this.state.criticalCorrection)
         // console.log('Damage Multips:',this.state.damageMultipliers)
         // console.log('HitZones:',this.state.rawHitZone, this.state.elementHitZone)
+        // console.log('RF:', this.state.rapidAmmoCorrection[0])
     }
 
     render() {
@@ -82,9 +103,7 @@ class App extends React.Component {
                 <h1 className="ui huge header center aligned purple">MH Rise: Sunbreak - LBG Damage Calculator</h1>
                 <div className="ui grid">
                     <Skills
-                        ammo={this.state.ammo}
-                        attackSkills={this.state.attackSkills}
-                        elementSkills={this.state.elementSkills}
+                        handleRapidFireUpdate={this.handleRapidFireUpdate}
                         handleAttackUpdate={this.handleAttackUpdate}
                         hanldeElementUpdate={this.handleElementUpdate}
                         handleMotionValueUpdate={this.handleMotionValueUpdate}

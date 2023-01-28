@@ -8,9 +8,8 @@ class Results extends React.Component {
         }
     }
 
-
-    handleOnChangeRaw = e => this.props.handleRawHitZoneUpdate(e.target.value)
-    handleOnChangeElement = e => this.props.handleElementHitZoneUpdate(e.target.value)
+    handleOnChangeRaw = e => this.props.handleRawHitZoneUpdate(e.target.value / 100)
+    handleOnChangeElement = e => this.props.handleElementHitZoneUpdate(e.target.value / 100)
 
     render() {
         return (
@@ -38,13 +37,15 @@ class Results extends React.Component {
                         <tr>
                             <td>Raw</td>
                             <td><input onChange={this.handleOnChangeRaw} type="number" placeholder="45" step="1" min='0' max='100' size="6"/></td>
-                            <td><input size="4"/></td>
+                            <td><input value={this.props.rawDamage} size="4"/></td>
                             <td><input size="4"/></td>
                         </tr>
                         <tr>
                             <td>Element</td>
                             <td><input onChange={this.handleOnChangeElement} type="number" placeholder="25" step="1" min='0' max='100' size="6"/></td>
-                            <td><input value={this.props.elementDamage} size="4"/></td><td><input size="4"/></td></tr>
+                            <td><input value={this.props.elementDamage} size="4"/>
+                            </td><td><input size="4"/></td>
+                        </tr>
                         <tr><td>Total</td><td> </td><td><input size="4"/></td><td><input size="4"/></td></tr>
                     </tbody>
                 </table>

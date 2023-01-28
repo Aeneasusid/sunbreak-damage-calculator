@@ -23,9 +23,14 @@
 //     console.log('111')
 // }
 
-let a = {
-    1:'2',
-    2: '4',
+let a = [0,1,2,3]
+
+if(true) {
+    a[0] = 11111
 }
 
-console.log('1:','1'*'2')
+if(false) {
+    a[0] = 2222
+}
+
+console.log('a:',a)
