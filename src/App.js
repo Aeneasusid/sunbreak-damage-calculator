@@ -9,6 +9,8 @@ class App extends React.Component {
         finalAttack:0,
         finalElement: 0,
         motionValue:0,
+        criticalCorrection: [1, 1, 1],// [expectation, boostMulti, elementMulti]
+        damageMultipliers:[1,1],
         ammo:[
             ['4 Elements',16, 40],['4 Pierce Elements',10, 22],['Pierce 2',7,0],['Pierce 3',9,0],['Normal 2',22,0],['Normal 3',34,0],
             ['Spread 2',7,0],['Spread 3',10,0],['Shrapnel 2',5,0],['Shrapnel 3',5,0],
@@ -29,17 +31,14 @@ class App extends React.Component {
             kushalaTeostraBlessing:[['kushalaTeostraBlessing'],[1.05,0],[1.1,0]],
             strife:[['strife'],[1.05,0],[1.1,0],[1.15,0]],
         },
-        criticalCorrection: [1, 1, 1],
-        damageMultipliers:[1,1],
-        damageMultiplier: {
-            criticalFirepower:[['raw'],[1, 1.1, 1.2, 1.3]],
-            elementReload:[['element'],[1, 1.1]],
-            elementExploit:[['element'], [1, 1.1, 1.125, 1.15]],
-            elementExploitRampage:[['element'], [1, 1.15]],
-            rapidFireUp:[['total'], [1, 1.05, 1.1, 1.2]],
-            ammoArrowBoost:[['total'], [1, 1.05, 1.1, 1.2]],
-        },
-
+        // damageMultiplier: {
+        //     criticalFirepower:[['raw'],[1, 1.1, 1.2, 1.3]],
+        //     elementReload:[['element'],[1, 1.1]],
+        //     elementExploit:[['element'], [1, 1.1, 1.125, 1.15]],
+        //     elementExploitRampage:[['element'], [1, 1.15]],
+        //     rapidFireUp:[['total'], [1, 1.05, 1.1, 1.2]],
+        //     ammoArrowBoost:[['total'], [1, 1.05, 1.1, 1.2]],
+        // },
     }
 
     handleAttackUpdate = finalAttack => this.setState({finalAttack: finalAttack})

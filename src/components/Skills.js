@@ -13,7 +13,6 @@ class Skills extends React.Component {
     }
 
     handleAmmo = (e) => {
-        console.log('e:',e.target.value)
         let ammo = this.props.ammo
         let ammoValues = []
         for (let i=0; i<ammo.length; i++) {
@@ -23,9 +22,9 @@ class Skills extends React.Component {
         }
         console.log('ammoValues:', ammoValues)
         this.props.handleMotionValueUpdate(ammoValues[0])
-        // this.setState({elementValue:ammoValues[1]})
-        this.state.elementValue = ammoValues[1]
-        this.handleCalculator()
+        this.setState({elementValue: ammoValues[1]}, () => {
+            this.handleCalculator()
+        })
     }
 
     handleBoosts = () => {
@@ -35,8 +34,9 @@ class Skills extends React.Component {
         boosts += Number(document.getElementById('boost3').value)
         boosts += Number(document.getElementById('boost4').value)
         boosts += Number(document.getElementById('boost5').value)
-        this.state.attackBoost = boosts
-        this.handleCalculator()
+        this.setState({attackBoost:boosts}, () => {
+            this.handleCalculator()
+        })
     }
 
     handleSkills = (e) => {
@@ -169,7 +169,7 @@ class Skills extends React.Component {
                     <thead><tr><th>Attack Boosts</th><th>Number</th></tr></thead>
                     <tbody>
                         <tr><td>Power Charm&Talon</td><td><input id='boost1' type="number" placeholder="15" step="3" min='0' max='15' size="6"/></td></tr>
-                        <tr><td>Qurious Crafting</td><td><input id='boost2' type="number" placeholder="10" step="5" min='0' max='25' size="6"/></td></tr>
+                        <tr><td>Qurious Crafting</td><td><input id='boost2' type="number" placeholder="0" step="5" min='0' max='25' size="6"/></td></tr>
                         <tr><td>Petalace</td><td><input id='boost3' type="number" placeholder="0" step="1" min='0' max='30' size="6"/></td></tr>
                         <tr><td>Dango</td><td><input id='boost4' type="number" placeholder="0" step="1" min='0' max='30' size="6"/></td></tr>
                         <tr><td>Others</td><td><input id='boost5' type="number" placeholder="0" step="1" min='-20' max='30' size="6"/></td></tr>

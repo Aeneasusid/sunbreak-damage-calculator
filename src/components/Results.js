@@ -13,29 +13,42 @@ class Results extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log('ele. HitZone:',this.state.elementHitZone)
+        // console.log('ele. HitZone:',this.state.elementHitZone)
         // console.log('Damage Multips:',this.props.damageMultipliers)
-        // console.log('Critical Correction:',this.props.criticalCorrection)
+        // console.log('Critical Correction 11111:',this.props.criticalCorrection)
         // console.log('Motion Value in Results:', this.props.motionValue)
         // console.log('final atk in Results:',this.props.finalAttack)
         // console.log('final ele. in Results:',this.props.finalElement)
     }
 
     handleElementDamage = () => {
+        let criticalExpectation = this.props.criticalCorrection[0]
+        let criticalElement = this.props.criticalCorrection[2]
         let elementDamage = this.props.finalElement
+        let elementHitZone = this.state.elementHitZone
+        //
         elementDamage *= this.props.finalAttack
         elementDamage *= this.state.elementHitZone
         elementDamage *= this.props.damageMultipliers[1]
-        elementDamage = Math.round(elementDamage/100)
-        console.log('elementDamage:', elementDamage)
-        // this.state.elementDamage = elementDamage
+        //
+
+        // critical correction
+        console.log('Critical Correction:',this.props.criticalCorrection)
+        elementDamage += elementDamage * (criticalElement - 1) * criticalExpectation
+        if (criticalExpectation === 0 || criticalExpectation === 1) {
+            elementDamage = Math.round(elementDamage/100)
+        } else {
+            elementDamage = Math.round(elementDamage) / 100
+        }
+        //
         this.setState({elementDamage:elementDamage})
     }
 
     handleRawHitZone = e => this.state.rawHitZone = e.target.value / 100
     handleElementHitZone = e => {
-        this.setState({elementHitZone: e.target.value / 100})
-        this.handleElementDamage()
+        this.setState({elementHitZone: e.target.value / 100}, () => {
+            this.handleElementDamage()
+        })
     }
 
     render() {

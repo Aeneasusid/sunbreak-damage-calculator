@@ -53,6 +53,10 @@ class Multipliers extends React.Component {
             rawMultipliers *= document.getElementById('total4').value
             elementMultipliers *= document.getElementById('total4').value
         }
+        if (document.getElementById('total5').value) {
+            rawMultipliers *= document.getElementById('total5').value
+            elementMultipliers *= document.getElementById('total5').value
+        }
         //
         let damageMultipliers = [rawMultipliers, elementMultipliers]
         this.props.handleDamageMultipliersUpdate(damageMultipliers)
@@ -86,9 +90,10 @@ class Multipliers extends React.Component {
                     <thead><tr><th>Total Damage </th><th>Multipliers</th></tr></thead>
                     <tbody id='total damage multipliers'>
                         <tr><td>Rapid Fire Up</td><td><input id='total1' type="number" placeholder="1" step="0.05" min='1' max='1.2' size="6"/></td></tr>
-                        <tr><td>Others 1</td><td><input id='total2' type="number" placeholder="1" step="0.05" min='1' max='1.5' size="6"/></td></tr>
-                        <tr><td>Others 2</td><td><input id='total3' type="number" placeholder="1" step="0.1" min='1' max='1.5' size="6"/></td></tr>
-                        <tr><td>Others 3</td><td><input id='total4' type="number" placeholder="1" step="0.1" min='1' max='1.5' size="6"/></td></tr>
+                        <tr><td>Normal/Spread/Pierce Up</td><td><input id='total2' type="number" placeholder="1" step="0.05" min='1' max='1.2' size="6"/></td></tr>
+                        <tr><td>Others 1</td><td><input id='total3' type="number" placeholder="1" step="0.05" min='1' max='1.5' size="6"/></td></tr>
+                        <tr><td>Others 2</td><td><input id='total4' type="number" placeholder="1" step="0.1" min='1' max='1.5' size="6"/></td></tr>
+                        <tr><td>Others 3</td><td><input id='total5' type="number" placeholder="1" step="0.1" min='1' max='1.5' size="6"/></td></tr>
                     </tbody>
                 </table>
             </div>
