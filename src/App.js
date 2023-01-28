@@ -14,13 +14,14 @@ class App extends React.Component {
         damageMultipliers:[1,[1,1,1],1],// [raw, [ele,exploit,rampage], total]
         rawHitZone:0.45,
         elementHitZone:0.25,
-        rawDamage:1,
+        rawDamage:0,
         elementDamage:1,
     }
 
     handleAttackUpdate = finalAttack => {
         this.setState({finalAttack: finalAttack}, () => {
             this.handleElementDamage()
+            this.handleRawDamage()
         })
     }
 
@@ -30,27 +31,38 @@ class App extends React.Component {
         })
     }
 
-    handleMotionValueUpdate = motionValue => this.setState({motionValue: motionValue})
+    handleMotionValueUpdate = motionValue => {
+        this.setState({motionValue: motionValue}, () => {
+            this.handleRawDamage()
+        })
+    }
 
     handleRapidFireUpdate = value => {
         this.setState({rapidAmmoCorrection:[value, 0.7, 0.5]}, () => {
             this.handleElementDamage()
+            this.handleRawDamage()
         })
     }
 
     handleCriticalCorrectionUpdate = (expectation, boostMulti, elementMulti) => {
         this.setState({criticalCorrection:[expectation, boostMulti, elementMulti]}, () => {
             this.handleElementDamage()
+            this.handleRawDamage()
         })
     }
 
     handleDamageMultipliersUpdate = damageMultipliers => {
         this.setState({damageMultipliers:damageMultipliers}, () => {
             this.handleElementDamage()
+            this.handleRawDamage()
         })
     }
 
-    handleRawHitZoneUpdate = (rawHitZone) => this.setState({rawHitZone: rawHitZone})
+    handleRawHitZoneUpdate = (rawHitZone) => {
+        this.setState({rawHitZone: rawHitZone}, () => {
+            this.handleRawDamage()
+        })
+    }
 
     handleElementHitZoneUpdate = elementHitZone => {
         this.setState({elementHitZone: elementHitZone}, () => {
@@ -58,11 +70,35 @@ class App extends React.Component {
         })
     }
 
+    handleRawDamage = () => {
+        let criticalExpectation = this.state.criticalCorrection[0]
+        let criticalBoost = this.state.criticalCorrection[1]
+        // motion value, atk, hitZone
+        let rawDamage = this.state.motionValue
+        rawDamage *= this.state.finalAttack
+        rawDamage *= this.state.rawHitZone
+        // damage multi.
+        rawDamage *= this.state.damageMultipliers[0]
+        rawDamage *= this.state.damageMultipliers[2]
+        // rapid fire correction
+        if (this.state.rapidAmmoCorrection[0] === 'Yes') {
+            rawDamage *= this.state.rapidAmmoCorrection[2]
+        }
+        // critical correction
+        rawDamage += rawDamage * (criticalBoost - 1) * criticalExpectation
+        if (criticalExpectation === 0 || criticalExpectation === 1) {
+            rawDamage = Math.round(rawDamage/100)
+        } else {
+            rawDamage = Math.round(rawDamage) / 100
+        }
+        //
+        this.setState({rawDamage:rawDamage})
+    }
 
     handleElementDamage = () => {
         let criticalExpectation = this.state.criticalCorrection[0]
         let criticalElement = this.state.criticalCorrection[2]
-        // atk, ele, hitZone
+        // ev, atk, hitZone
         let elementDamage = this.state.finalElement
         elementDamage *= this.state.finalAttack
         elementDamage *= this.state.elementHitZone
@@ -82,6 +118,10 @@ class App extends React.Component {
             elementDamage = Math.round(elementDamage/100)
         } else {
             elementDamage = Math.round(elementDamage) / 100
+        }
+        // 1
+        if (elementDamage === 0 && this.state.elementHitZone > 0) {
+            elementDamage = 1
         }
         //
         this.setState({elementDamage:elementDamage})

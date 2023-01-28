@@ -4,12 +4,17 @@ class Results extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            totalDamage:[],
+            saveTotalDamage:undefined,
         }
     }
 
     handleOnChangeRaw = e => this.props.handleRawHitZoneUpdate(e.target.value / 100)
     handleOnChangeElement = e => this.props.handleElementHitZoneUpdate(e.target.value / 100)
+
+    totalDamageCompare = () => {
+        this.setState({saveTotalDamage: this.props.rawDamage + this.props.elementDamage})
+    }
+
 
     render() {
         return (
@@ -38,15 +43,20 @@ class Results extends React.Component {
                             <td>Raw</td>
                             <td><input onChange={this.handleOnChangeRaw} type="number" placeholder="45" step="1" min='0' max='100' size="6"/></td>
                             <td><input value={this.props.rawDamage} size="4"/></td>
-                            <td><input size="4"/></td>
+                            <td><input value={Math.round(100 * this.props.rawDamage / (this.props.rawDamage + this.props.elementDamage))} size="4"/></td>
                         </tr>
                         <tr>
                             <td>Element</td>
                             <td><input onChange={this.handleOnChangeElement} type="number" placeholder="25" step="1" min='0' max='100' size="6"/></td>
                             <td><input value={this.props.elementDamage} size="4"/>
-                            </td><td><input size="4"/></td>
+                            </td><td><input value={Math.round(100 * this.props.elementDamage / (this.props.rawDamage + this.props.elementDamage))} size="4"/></td>
                         </tr>
-                        <tr><td>Total</td><td> </td><td><input size="4"/></td><td><input size="4"/></td></tr>
+                        <tr>
+                            <td>Total</td>
+                            <td><button onClick={this.totalDamageCompare} className="mini ui purple basic button">Compare</button></td>
+                            <td><input value={this.props.rawDamage + this.props.elementDamage} size="4"/></td>
+                            <td><input value={(100 * this.props.rawDamage + this.props.elementDamage - this.state.saveTotalDamage) / this.state.saveTotalDamage} size="4"/></td>
+                        </tr>
                     </tbody>
                 </table>
 
