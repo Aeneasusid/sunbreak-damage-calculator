@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/sunbreak-damage-calculator/static/css/main.073c9b0a.css",
+    "main.js": "/sunbreak-damage-calculator/static/js/main.ef864fb8.js",
+    "static/js/787.078098fd.chunk.js": "/sunbreak-damage-calculator/static/js/787.078098fd.chunk.js",
+    "index.html": "/sunbreak-damage-calculator/index.html",
+    "main.073c9b0a.css.map": "/sunbreak-damage-calculator/static/css/main.073c9b0a.css.map",
+    "main.ef864fb8.js.map": "/sunbreak-damage-calculator/static/js/main.ef864fb8.js.map",
+    "787.078098fd.chunk.js.map": "/sunbreak-damage-calculator/static/js/787.078098fd.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.073c9b0a.css",
+    "static/js/main.ef864fb8.js"
+  ]
+}
