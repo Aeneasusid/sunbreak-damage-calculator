@@ -7,7 +7,6 @@ class Column2Skills extends React.Component {
             attackSkills:{
                 attackBoosts:[['attackBoosts'],[1,3],[1,6],[1,9],[1.05,7],[1.06,8],[1.08,9],[1.1,10]],
                 agitator:[['agitator'],[1,4],[1,8],[1,12],[1,16],[1,20]],
-                longBarrelTuneUp:[['longBarrelTuneUp'],[1.05,0],[1.075,0]],
                 resentment:[['resentment'],[1,5],[1,10],[1,15],[1,20],[1,25]],
                 adrenalineRush:[['adrenalineRush'],[1,10],[1,15],[1,30]],
                 counterstrike:[['counterstrike'],[1,10],[1,15],[1,25]],
@@ -45,7 +44,6 @@ class Column2Skills extends React.Component {
         switch(e.target.parentNode.parentNode.firstChild.innerHTML) {
             case 'Attack Boosts': skillName = this.state.attackSkills.attackBoosts[0][0]; break;
             case 'Agitator': skillName = this.state.attackSkills.agitator[0][0]; break;
-            case 'Long Barrel (Tune-up)': skillName = this.state.attackSkills.longBarrelTuneUp[0][0]; break;
             case 'Resentment': skillName = this.state.attackSkills.resentment[0][0]; break;
             case 'Adrenaline Rush': skillName = this.state.attackSkills.adrenalineRush[0][0]; break;
             case 'Counterstrike': skillName = this.state.attackSkills.counterstrike[0][0]; break;
@@ -125,7 +123,6 @@ class Column2Skills extends React.Component {
                 <table onChange={this.handleSkills} className="ui compact table">
                     <thead><tr><th>Skills</th><th>Level</th></tr></thead>
                     <tbody id="skills">
-                    <tr><td>Long Barrel (Tune-up)</td><td><input type="number" placeholder="0" step="1" min='0' max='2' size="6"/></td></tr>
                     <tr><td>Attack Boosts</td><td><input type="number" placeholder="0" step="1" min='0' max='7' size="6"/></td></tr>
                     <tr><td>Agitator</td><td><input type="number" placeholder="0" step="1" min='0' max='5' size="6"/></td></tr>
                     <tr><td>Adrenaline Rush</td><td><input type="number" placeholder="0" step="1" min='0' max='3' size="6"/></td></tr>
@@ -135,9 +132,9 @@ class Column2Skills extends React.Component {
                     <tr><td>Dango Booster</td><td><input type="number" placeholder="0" step="1" min='0' max='4' size="6"/></td></tr>
                     <tr><td>Dango Bulker</td><td><input type="number" placeholder="0" step="1" min='0' max='4' size="6"/></td></tr>
                     <tr><td>Dango Adrenaline</td><td><input type="number" placeholder="0" step="1" min='0' max='4' size="6"/></td></tr>
-                    <tr><td>Dereliction (Blue)</td><td><input type="number" placeholder="0" step="1" min='0' max='3' size="6"/></td></tr>
-                    <tr><td>Dereliction (Red)</td><td><input type="number" placeholder="0" step="1" min='0' max='3' size="6"/></td></tr>
                     <tr><td>Resentment</td><td><input type="number" placeholder="0" step="1" min='0' max='5' size="6"/></td></tr>
+                    <tr><td>Dereliction (Red)</td><td><input type="number" placeholder="0" step="1" min='0' max='3' size="6"/></td></tr>
+                    <tr><td>Dereliction (Blue)</td><td><input type="number" placeholder="0" step="1" min='0' max='3' size="6"/></td></tr>
                     <tr><td>Mail of Hellfire (Red)</td><td><input type="number" placeholder="0" step="1" min='0' max='3' size="6"/></td></tr>
                     <tr><td>Mail of Hellfire (Blue)</td><td><input type="number" placeholder="0" step="1" min='0' max='3' size="6"/></td></tr>
                     <tr><td>Element Attack</td><td><input type="number" placeholder="0" step="1" min='0' max='5' size="6"/></td></tr>

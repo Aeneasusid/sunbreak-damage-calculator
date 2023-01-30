@@ -128,15 +128,15 @@ class App extends React.Component {
         let criticalExpectation = this.state.criticalCorrection[0]
         let criticalBoost = this.state.criticalCorrection[1]
         // motion value, atk, hitZone
-        let rawDamage = this.state.motionValue
-        rawDamage *= this.state.finalAttack
+        let rawDamage = this.state.finalAttack
+        rawDamage *= this.state.motionValue
         rawDamage *= this.state.rawHitZone
         // damage multi.
         rawDamage *= this.state.damageMultipliers[0]
         rawDamage *= this.state.damageMultipliers[2]
         // rapid fire correction
         if (this.state.rapidAmmoCorrection[0] === 'Yes') {
-            rawDamage *= this.state.rapidAmmoCorrection[2]
+            rawDamage *= this.state.rapidAmmoCorrection[1]
         }
         // critical correction
         rawDamage += rawDamage * (criticalBoost - 1) * criticalExpectation
