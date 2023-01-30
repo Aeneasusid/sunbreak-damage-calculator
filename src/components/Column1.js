@@ -1,9 +1,9 @@
 import React from "react";
-import WeaponRaws from "./Column1/Weapon Raws";
+import EquipmentInfo from "./Column1/EquipmentInfo";
 import AmmoType from "./Column1/AmmoType";
 import HitZone from "./Column1/Hitzone";
 import CriticalCorrection from "./Column1/CriticalCorrection";
-import AttackBoosts from "./Column1/AttackBoosts";
+import Items from "./Column1/Items";
 
 class Column1 extends React.Component {
     constructor(props) {
@@ -12,8 +12,9 @@ class Column1 extends React.Component {
 
     render() {
         return (
-            <div className="ui column labeled input four wide column">
-                <WeaponRaws handleFinalAttackElementUpdate={this.props.handleFinalAttackElementUpdate}/>
+            <div className="four wide column">
+            {/*<div className="ColumnMQ">*/}
+                <EquipmentInfo handleFinalAttackElementUpdate={this.props.handleFinalAttackElementUpdate}/>
                 <AmmoType
                     handleMotionValueUpdate={this.props.handleMotionValueUpdate}
                     handleElementValueUpdate={this.props.handleElementValueUpdate}
@@ -24,7 +25,7 @@ class Column1 extends React.Component {
                     handleElementHitZoneUpdate={this.props.handleElementHitZoneUpdate}
                 />
                 <CriticalCorrection handleCriticalCorrectionUpdate={this.props.handleCriticalCorrectionUpdate}/>
-                <AttackBoosts handleAttackBoosts={this.props.handleAttackBoosts}/>
+                <Items handleAttackBoosts={this.props.handleAttackBoosts}/>
             </div>
         )
     }

@@ -9,7 +9,7 @@ class Column4Results extends React.Component {
 
     render() {
         return (
-            <div className="ui column labeled input four wide column" >
+            <div className="four wide column" >
                 <FinalAttackElement
                     finalAttack={this.props.finalAttack}
                     finalElement={this.props.finalElement}

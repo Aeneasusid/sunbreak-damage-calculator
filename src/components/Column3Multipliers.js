@@ -32,13 +32,15 @@ class Column3Multipliers extends React.Component {
 
     render() {
         return (
-            <div className="ui column labeled input four wide column" >
+            <div className="four wide column" >
                 <table className="ui compact table" onChange={this.handleDamageMultipliersChange}>
                     <thead><tr><th>Raw Damage </th><th>Multipliers</th></tr></thead>
                     <tbody>
                         <tr><td>Critical Firepower</td><td><input className='raw-damage' type="number" placeholder="1" step="0.1" min='1' max='1.3' size="6"/></td></tr>
-                        <tr><td>Dango</td><td><input className='raw-damage' type="number" placeholder="1" step="0.025" min='1' max='1.15' size="6"/></td></tr>
-                        <tr><td>Others</td><td><input className='raw-damage' type="number" placeholder="1" step="0.1" min='1' max='1.3' size="6"/></td></tr>
+                        <tr><td>Dango Temper</td><td><input className='raw-damage' type="number" placeholder="1" step="0.01" min='1' max='1.08' size="6"/></td></tr>
+                        <tr><td>Dango Marksman</td><td><input className='raw-damage' type="number" placeholder="1" step="0.05" min='1' max='1.1' size="6"/></td></tr>
+                        <tr><td>Sneak Attack</td><td><input className='raw-damage' type="number" placeholder="1" step="0.05" min='1' max='1.2' size="6"/></td></tr>
+                        <tr><td>Others</td><td><input className='raw-damage' type="number" placeholder="1" step="0.05" min='1' max='1.3' size="6"/></td></tr>
                     </tbody>
                     <thead><tr><th>Elemental Damage </th><th>Multipliers</th></tr></thead>
                     <tbody id='element damage multipliers'>
@@ -51,9 +53,7 @@ class Column3Multipliers extends React.Component {
                     <tbody id='total damage multipliers'>
                         <tr><td>Rapid Fire Up</td><td><input className='total-damage' type="number" placeholder="1" step="0.05" min='1' max='1.2' size="6"/></td></tr>
                         <tr><td>Normal/Spread/Pierce Up</td><td><input className='total-damage' type="number" placeholder="1" step="0.05" min='1' max='1.2' size="6"/></td></tr>
-                        <tr><td>Others 1</td><td><input className='total-damage' type="number" placeholder="1" step="0.05" min='1' max='1.5' size="6"/></td></tr>
-                        <tr><td>Others 2</td><td><input className='total-damage' type="number" placeholder="1" step="0.1" min='1' max='1.5' size="6"/></td></tr>
-                        <tr><td>Others 3</td><td><input className='total-damage' type="number" placeholder="1" step="0.1" min='1' max='1.5' size="6"/></td></tr>
+                        <tr><td>Others</td><td><input className='total-damage' type="number" placeholder="1" step="0.05" min='1' max='1.5' size="6"/></td></tr>
                     </tbody>
                 </table>
             </div>

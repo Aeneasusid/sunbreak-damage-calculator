@@ -9,14 +9,18 @@ class FinalAttackElement extends React.Component{
         return (
             <table className="ui compact table">
                 <thead>
-                <tr>
-                    <th>Final Attack Power</th>
-                    <th><input id="Final Attack Power" value={this.props.finalAttack} size="4" /></th>
-                </tr>
-                <tr>
-                    <th>Final Element Value</th>
-                    <th><input id="Final Element Value" value={this.props.finalElement} size="4" /></th>
-                </tr>
+                    <tr>
+                        <th>Final Status</th>
+                        <th>Value</th>
+                    </tr>
+                    <tr>
+                        <td>Attack</td>
+                        <td><input id="Final Attack Power" value={this.props.finalAttack} style={{textAlign:'right'}} size="5" /></td>
+                    </tr>
+                    <tr>
+                        <td>Element</td>
+                        <td><input id="Final Element Value" value={this.props.finalElement} style={{textAlign:'right'}} size="5" /></td>
+                    </tr>
                 </thead>
             </table>
         )

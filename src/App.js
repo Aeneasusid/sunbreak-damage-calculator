@@ -25,29 +25,38 @@ class App extends React.Component {
 
     // column 1
     handleFinalAttackElementUpdate = () => {
+        let finalAttack = document.getElementById('Weapon Attack').valueAsNumber
+        let finalElement = this.state.elementValue
+        let [attackMultis, attackAdds, elementMultis, elementAdds] = [1, 0, 1, 0]
+        for (let x of this.state.attackMultiAdd) {
+            attackMultis *= x[1]
+            attackAdds += x[2]
+        }
+        for (let x of this.state.elementMultiAdd) {
+            elementMultis *= x[1]
+            elementAdds += x[2]
+        }
+        // handle this Game float missing in multiple
+        if (attackMultis === 1.05) {
+            if (finalAttack >= 300) {
+                finalAttack *= 0.9998
+            } else {
+                finalAttack *= 0.9981
+            }
+        }
         // handle Attack Power
-        let finalAttack = document.getElementById('Weapon Raw Attack').valueAsNumber
-        for (let x of this.state.attackMultiAdd) {
-            finalAttack *= x[1]
-        }
-        for (let x of this.state.attackMultiAdd) {
-            finalAttack += x[2]
-        }
-        finalAttack = Math.floor(finalAttack + 0.1) + this.state.attackBoosts
+        finalAttack *= attackMultis
+        finalAttack += attackAdds
+        finalAttack += this.state.attackBoosts
+        finalAttack = Math.floor(finalAttack + 0.1)
         this.setState({finalAttack: finalAttack}, () => {
             this.handleElementDamage()
             this.handleRawDamage()
         })
-
         // handle Element Value
-        let finalElement = this.state.elementValue
         if  (finalElement > 0) {
-            for (let x of this.state.elementMultiAdd) {
-                finalElement *= x[1]
-            }
-            for (let x of this.state.elementMultiAdd) {
-                finalElement += x[2]
-            }
+            finalElement *= elementMultis
+            finalElement += elementAdds
         }
         finalElement = Math.floor(finalElement + 0.1)
         this.setState({finalElement: finalElement}, () => {
