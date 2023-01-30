@@ -95,8 +95,8 @@ class Column2Skills extends React.Component {
             if (Object.keys(this.state.elementSkills).includes(skillName)) {
                 let elementMultiAdd = this.props.elementMultiAdd
                 let skillEffect = this.state.elementSkills[skillName]
-                // console.log('skillName:', skillName, 'skillEffect:',skillEffect, 'skillLevel:', skillLevel)
                 let flag = true
+                // console.log('skillName:', skillName, 'skillEffect:',skillEffect, 'skillLevel:', skillLevel)
                 for (let i=0; i<elementMultiAdd.length; i++) {
                     if (elementMultiAdd[i][0] === skillName) {
                         if (skillLevel > 0) {
@@ -119,7 +119,6 @@ class Column2Skills extends React.Component {
     render() {
         return (
             <div className="four wide column">
-            {/*<div className="ColumnMQ">*/}
                 <table onChange={this.handleSkills} className="ui compact table">
                     <thead><tr><th>Skills</th><th>Level</th></tr></thead>
                     <tbody id="skills">

@@ -13,7 +13,6 @@ class Column1 extends React.Component {
     render() {
         return (
             <div className="four wide column">
-            {/*<div className="ColumnMQ">*/}
                 <EquipmentInfo handleFinalAttackElementUpdate={this.props.handleFinalAttackElementUpdate}/>
                 <AmmoType
                     handleMotionValueUpdate={this.props.handleMotionValueUpdate}
