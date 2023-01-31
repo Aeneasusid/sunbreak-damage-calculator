@@ -173,7 +173,7 @@ class App extends React.Component {
         } else {
             elementDamage = Math.round(elementDamage) / 100
         }
-        // 1
+        // at least 1 point ele damage
         if (elementDamage === 0 && this.state.elementHitZone > 0) {
             elementDamage = 1
         }

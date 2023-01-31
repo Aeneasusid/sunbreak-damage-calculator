@@ -31,7 +31,7 @@ class Column2Skills extends React.Component {
                 kushalaTeostraBlessing:[['kushalaTeostraBlessing'],[1.05,0],[1.1,0]],
                 stormsoul:[['stormsoul'],[1.05,0],[1.1,0],[1.15,0]],
                 strife:[['strife'],[1.05,0],[1.1,0],[1.15,0]],
-                burst: [['burst'],[1,5],[1,5],[1,5]],
+                burst: [['burst'],[1,6],[1,7],[1,8]],
                 bloodlust:[['bloodlust'],[1,5],[1,7],[1,10]],
                 coalescence:[['coalescence'],[1,2],[1,3],[1,4]],
             },
