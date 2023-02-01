@@ -23,7 +23,10 @@ class Column1 extends React.Component {
                     handleRawHitZoneUpdate={this.props.handleRawHitZoneUpdate}
                     handleElementHitZoneUpdate={this.props.handleElementHitZoneUpdate}
                 />
-                <CriticalCorrection handleCriticalCorrectionUpdate={this.props.handleCriticalCorrectionUpdate}/>
+                <CriticalCorrection
+                    // criticalCorrection={this.props.criticalCorrection}
+                    handleCriticalCorrectionUpdate={this.props.handleCriticalCorrectionUpdate}
+                />
                 <Items handleAttackBoosts={this.props.handleAttackBoosts}/>
             </div>
         )

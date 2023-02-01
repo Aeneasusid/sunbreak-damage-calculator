@@ -14,13 +14,13 @@ class App extends React.Component {
         attackBoosts:0,
         motionValue:16,
         elementValue: 40,
-        rapidAmmoCorrection: [false, 0.7, 0.5],
-        criticalCorrection: [1, 1, 1],// [expectation, boostMulti, elementMulti]
+        rapidAmmoCorrection: ['Rapid Fire', 0.7, 0.5],
+        criticalCorrection: [],// [expectation, boostMulti, elementMulti]
         damageMultipliers:[1,[1,1,1],1],// [raw, [ele,exploit,rampage], total]
-        rawHitZone:0.45,
-        elementHitZone:0.25,
+        rawHitZone:0,
+        elementHitZone:0,
         rawDamage:0,
-        elementDamage:1,
+        elementDamage:0,
     }
 
     // column 1
@@ -135,7 +135,7 @@ class App extends React.Component {
         rawDamage *= this.state.damageMultipliers[0]
         rawDamage *= this.state.damageMultipliers[2]
         // rapid fire correction
-        if (this.state.rapidAmmoCorrection[0] === 'Yes') {
+        if (this.state.rapidAmmoCorrection[0] === 'Rapid Fire') {
             rawDamage *= this.state.rapidAmmoCorrection[1]
         }
         // critical correction
@@ -163,7 +163,7 @@ class App extends React.Component {
         // total-damage multi.
         elementDamage *= this.state.damageMultipliers[2]
         // rapid fire correction
-        if (this.state.rapidAmmoCorrection[0] === 'Yes') {
+        if (this.state.rapidAmmoCorrection[0] === 'Rapid Fire') {
             elementDamage *= this.state.rapidAmmoCorrection[2]
         }
         // critical correction
@@ -173,12 +173,22 @@ class App extends React.Component {
         } else {
             elementDamage = Math.round(elementDamage) / 100
         }
-        // at least 1 point ele damage
-        if (elementDamage === 0 && this.state.elementHitZone > 0) {
+        // sometimes still 1 point ele damage
+        if (elementDamage > 0 && elementDamage < 0.5) {
             elementDamage = 1
         }
         //
         this.setState({elementDamage:elementDamage})
+    }
+
+    // set default values here
+    componentDidMount = () => {
+        document.getElementById('Weapon Attack').value = '330'
+        this.setState({rawHitZone: 0.45})
+        this.setState({elementHitZone: 0.25})
+        this.setState({criticalCorrection: [0, 1.25, 1]})
+
+        this.handleFinalAttackElementUpdate()
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -191,12 +201,14 @@ class App extends React.Component {
         // console.log('HitZones:',this.state.rawHitZone, this.state.elementHitZone)
         // console.log('RF:', this.state.rapidAmmoCorrection[0])
     }
+
     render() {
         return (
             <div className="ui container">
-                <h1 className="ui huge header center aligned purple">MH Rise: Sunbreak - LBG Damage Calculator</h1>
+                <h1 className="ui huge header center aligned purple">MH Rise: Sunbreak - Damage Calculator</h1>
                 <div className="ui grid">
                     <Column1
+                        // criticalCorrection={this.state.criticalCorrection}
                         handleFinalAttackElementUpdate={this.handleFinalAttackElementUpdate}
                         handleMotionValueUpdate={this.handleMotionValueUpdate}
                         handleElementValueUpdate={this.handleElementValueUpdate}

@@ -1,8 +1,8 @@
 import React from "react";
 
 class CriticalCorrection extends React.Component{
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             criticalBoost:[1.25, 1.3, 1.35, 1.4],
             criticalElement:[1, 1.05, 1.1, 1.15],

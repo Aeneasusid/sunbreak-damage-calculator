@@ -57,8 +57,8 @@ class AmmoType extends React.Component{
                     <tr>
                         <td>
                             <select className="ui compact selection dropdown" onChange={e => this.props.handleRapidFireUpdate(e.target.value)}>
-                                <option value='No'>Not Rapid Fire</option>
-                                <option value='Yes'>Rapid Fire</option>
+                                <option value='Rapid Fire'>Rapid Fire</option>
+                                <option value='Non Rapid Fire'>Non Rapid Fire</option>
                             </select>
                         </td>
                     </tr>
