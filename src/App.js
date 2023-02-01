@@ -7,18 +7,58 @@ import './App.css';
 
 class App extends React.Component {
     state = {
-        finalAttack:0,
-        finalElement: 0,
-        attackMultiAdd: [], // ['xxx skill',1,0],
-        elementMultiAdd: [],
-        attackBoosts:0,
-        motionValue:16,
-        elementValue: 40,
+        ammo:{
+                '4 Elements':[16,40], '4 Pierce Elements':[10,22],
+                'Pierce 2':[7,0], 'Pierce 3':[9,0],
+                'Normal 2':[22,0], 'Normal 3':[34,0],
+                'Spread 2':[7,0], 'Spread 3':[10,0],
+                'Shrapnel 2':[5,0],'Shrapnel 3':[5,0],
+        },
+        ammoValues: [10, 22],// [motionValue, elementValue]
         rapidAmmoCorrection: ['Rapid Fire', 0.7, 0.5],
-        criticalCorrection: [],// [expectation, boostMulti, elementMulti]
-        damageMultipliers:[1,[1,1,1],1],// [raw, [ele,exploit,rampage], total]
         rawHitZone:0,
         elementHitZone:0,
+        criticalCorrection: [],// [expectation %, boostLevel, elementLevel]
+        itemBoosts:0,
+        //
+        attackSkills: {
+            attackBoosts:[['attackBoosts'],[1,3],[1,6],[1,9],[1.05,7],[1.06,8],[1.08,9],[1.1,10]],
+            agitator:[['agitator'],[1,4],[1,8],[1,12],[1,16],[1,20]],
+            resentment:[['resentment'],[1,5],[1,10],[1,15],[1,20],[1,25]],
+            adrenalineRush:[['adrenalineRush'],[1,10],[1,15],[1,30]],
+            counterstrike:[['counterstrike'],[1,10],[1,15],[1,25]],
+            peakPerformance:[['peakPerformance'],[1,5],[1,10],[1,20]],
+            resuscitate:[['resuscitate'],[1,5],[1,10],[1,20]],
+            dangoBooster:[['dangoBooster'],[1,6],[1,9],[1,12],[1,15]],
+            dangoBulker:[['dangoBulker'],[1,10],[1,15],[1,15],[1,15]],
+            dangoAdrenaline:[['dangoAdrenaline'],[1.3,0],[1.35,0],[1.35,0],[1.35,0]],
+            derelictionBlue: [['derelictionBlue'],[1,25],[1,30],[1,35]],
+            mailOfHellfireRed: [['mailOfHellfireRed'],[1,15],[1,25],[1,35]],
+            burst:[['burst'],[1,8],[1,9],[1,10]],
+            bloodlust:[['bloodlust'],[1,10],[1,15],[1,20]],
+            coalescence:[['coalescence'],[1,12],[1,15],[1,18]],
+            fortify:[['fortify'],[1.1,0],[1.2,0]],
+            dragonheart:[['dragonheart'],[],[],[],[],[1.1,0]],
+            heroics:[['heroics'],[],[],[],[],[1.3,0]],
+        },
+        elementSkills: {
+            derelictionRed:[['derelictionRed'],[1,10],[1,15],[1,20]],
+            mailOfHellfireBlue: [['mailOfHellfireBlue'],[1.05,0],[1.1,0],[1.2,0]],
+            elementAttack:[['elementAttack'],[1,2],[1,3],[1.05,4],[1.1,4],[1.2,4]],
+            kushalaTeostraBlessing:[['kushalaTeostraBlessing'],[1.05,0],[1.1,0]],
+            stormsoul:[['stormsoul'],[1.05,0],[1.1,0],[1.15,0]],
+            strife:[['strife'],[1.05,0],[1.1,0],[1.15,0]],
+            burst: [['burst'],[1,6],[1,7],[1,8]],
+            bloodlust:[['bloodlust'],[1,5],[1,7],[1,10]],
+            coalescence:[['coalescence'],[1,2],[1,3],[1,4]],
+        },
+        attackMultiAdd: [], // ['xxx skill',1,0],
+        elementMultiAdd: [],
+        //
+        damageMultipliers:[1,[1,1,1],1],// [raw, [ele,e. exploit,e. e. rampage], total]
+        //
+        finalAttack:0,
+        finalElement: 0,
         rawDamage:0,
         elementDamage:0,
     }
@@ -26,7 +66,7 @@ class App extends React.Component {
     // column 1
     handleFinalAttackElementUpdate = () => {
         let finalAttack = document.getElementById('Weapon Attack').valueAsNumber
-        let finalElement = this.state.elementValue
+        let finalElement = this.state.ammoValues[1]
         let [attackMultis, attackAdds, elementMultis, elementAdds] = [1, 0, 1, 0]
         for (let x of this.state.attackMultiAdd) {
             attackMultis *= x[1]
@@ -47,7 +87,11 @@ class App extends React.Component {
         // handle Attack Power
         finalAttack *= attackMultis
         finalAttack += attackAdds
-        finalAttack += this.state.attackBoosts
+        finalAttack += this.state.itemBoosts
+        // another multipliers-atk
+        if (document.getElementById('melodyAttackUp').value > 1) {finalAttack *= 1.1}
+        if (document.getElementById('fanningManeuver').value > 1) {finalAttack *= 1.1}
+        // round specially
         finalAttack = Math.floor(finalAttack + 0.1)
         this.setState({finalAttack: finalAttack}, () => {
             this.handleElementDamage()
@@ -58,24 +102,33 @@ class App extends React.Component {
             finalElement *= elementMultis
             finalElement += elementAdds
         }
+        // another multipliers-ele
+        if (document.getElementById('melodyElementalBoost').value > 1) {finalElement *= 1.1}
+        // round specially
         finalElement = Math.floor(finalElement + 0.1)
         this.setState({finalElement: finalElement}, () => {
             this.handleElementDamage()
         })
     }
-    //
-    handleMotionValueUpdate = motionValue => {
-        this.setState({motionValue: motionValue}, () => {
-            this.handleRawDamage()
-        })
-    }
 
-    handleElementValueUpdate = elementValue => {
-        this.setState({elementValue: elementValue}, () => {
+    handleAmmoTypeChange = (ammoType) => {
+        this.setState({ammoValues: this.state.ammo[ammoType]}, () => {
+            this.handleRawDamage()
             this.handleFinalAttackElementUpdate()
         })
+        // this.props.handleMotionValueUpdate(ammoValues[0])
+        // this.props.handleElementValueUpdate(ammoValues[1])
+        // let ammo = this.state.ammo
+        // let ammoValues = []
+        // for (let i=0; i<ammo.length; i++) {
+        //     if (ammo[i][0] === e.target.value) {
+        //         ammoValues = [ammo[i][1], ammo[i][2]]
+        //     }
+        // }
+        // this.props.handleMotionValueUpdate(ammoValues[0])
+        // this.props.handleElementValueUpdate(ammoValues[1])
     }
-    //
+
     handleRapidFireUpdate = value => {
         this.setState({rapidAmmoCorrection:[value, 0.7, 0.5]}, () => {
             this.handleElementDamage()
@@ -94,30 +147,111 @@ class App extends React.Component {
             this.handleElementDamage()
         })
     }
+
     //
-    handleCriticalCorrectionUpdate = (expectation, boostMulti, elementMulti) => {
-        this.setState({criticalCorrection:[expectation, boostMulti, elementMulti]}, () => {
-            this.handleElementDamage()
+    handleCriticalChange = (e) => {
+        let expectation  = this.state.criticalCorrection[0]
+        let boostLevel = this.state.criticalCorrection[1]
+        let elementLevel  = this.state.criticalCorrection[2]
+        switch(e.target.id) {
+            case 'Critical Expect. (%)': expectation = e.target.value / 100;break;
+            case 'Critical Boost': boostLevel = Number(e.target.value);break;
+            case 'Critical Element': elementLevel = Number(e.target.value);break;
+        }
+        this.setState({criticalCorrection:[expectation, boostLevel, elementLevel]}, () => {
             this.handleRawDamage()
+            this.handleElementDamage()
         })
     }
-    //
-    handleAttackBoosts = () => {
+
+    handleItemBoosts = () => {
         let attackBoosts = 0
-        let atkBoosts  = document.querySelectorAll('.atk-boost')
+        let atkBoosts  = document.querySelectorAll('.itemBoost')
         atkBoosts.forEach(e => attackBoosts +=  Number(e.value))
-        this.setState({attackBoosts:attackBoosts}, () => {
+        this.setState({itemBoosts:attackBoosts}, () => {
             this.handleFinalAttackElementUpdate()
         })
     }
 
     // column 2
-    handleAttackMultiAddUpdate = attackMultiAdd => {this.setState({attackMultiAdd: attackMultiAdd})}
-    handleElementMultiAddUpdate = ElementMultiAdd => {this.setState({ElementMultiAdd: ElementMultiAdd})}
+    handleSkills = (e) => {
+        let [skillName, skillLevel] = [e.target.id, e.target.value]
+        // handle Attack
+        if (Object.keys(this.state.attackSkills).includes(skillName)) {
+            let attackMultiAdd = this.state.attackMultiAdd
+            let skillEffect = this.state.attackSkills[skillName]
+            let flag = true
+            // console.log('skillName:', skillName, 'skillEffect:',skillEffect, 'skillLevel:', skillLevel)
+            for (let i=0; i<attackMultiAdd.length; i++) {
+                if (attackMultiAdd[i][0] === skillName) {
+                    if (skillLevel > 0) {
+                        attackMultiAdd.splice(i,1, [skillName, skillEffect[skillLevel][0], skillEffect[skillLevel][1]])
+                    } else {
+                        attackMultiAdd.splice(i,1, [skillName, 1, 0])
+                    }
+                    flag = false
+                }
+            }
+            if (flag && skillLevel > 0) {
+                attackMultiAdd.push([skillName, skillEffect[skillLevel][0], skillEffect[skillLevel][1]])
+            } else if (flag && skillLevel === 0) {
+                attackMultiAdd.push([skillName, 1, 0])
+            }
+            this.setState({attackMultiAdd: attackMultiAdd}, () => {
+                this.handleFinalAttackElementUpdate()
+            })
+        }
+        // handle Element
+        if (Object.keys(this.state.elementSkills).includes(skillName)) {
+            let elementMultiAdd = this.state.elementMultiAdd
+            let skillEffect = this.state.elementSkills[skillName]
+            let flag = true
+            // console.log('skillName:', skillName, 'skillEffect:',skillEffect, 'skillLevel:', skillLevel)
+            for (let i=0; i<elementMultiAdd.length; i++) {
+                if (elementMultiAdd[i][0] === skillName) {
+                    if (skillLevel > 0) {
+                        elementMultiAdd.splice(i,1, [skillName, skillEffect[skillLevel][0], skillEffect[skillLevel][1]])
+                    } else {
+                        elementMultiAdd.splice(i,1, [skillName, 1, 0])
+                    }
+                    flag = false
+                }
+            }
+            if (flag && skillLevel > 0) {
+                elementMultiAdd.push([skillName, skillEffect[skillLevel][0], skillEffect[skillLevel][1]])
+            } else if (flag && skillLevel === 0) {
+                elementMultiAdd.push([skillName, 1, 0])
+            }
+            this.setState({elementMultiAdd: elementMultiAdd}, () => {
+                this.handleFinalAttackElementUpdate()
+            })
+        }
+    }
 
     // column 3
-    handleDamageMultipliersUpdate = damageMultipliers => {
-        this.setState({damageMultipliers:damageMultipliers}, () => {
+    handleDamageMultipliersUpdate = () => {
+        let rawDamageMulti = 1
+        let elementDamageMulti = [1, 1, 1]
+        let totalDamageMulti = 1
+        let rawDamageElements = document.querySelectorAll('.raw-damage')
+        let elementDamageElements = document.querySelectorAll('.element-damage')
+        let totalDamageElements = document.querySelectorAll('.total-damage')
+        //
+        rawDamageElements.forEach(e => {if (e.value) {rawDamageMulti *= e.value}})
+        elementDamageElements.forEach(e => {
+            if (e.value) {
+                if (e.id === 'Element Exploit') {
+                    elementDamageMulti[1] *= e.value
+                } else if (e.id === 'Ele. Exploit Rampage') {
+                    elementDamageMulti[2] *= e.value
+                } else {
+                    elementDamageMulti[0] *= e.value
+                }
+            }
+        })
+        totalDamageElements.forEach(e => {if (e.value) {totalDamageMulti *= e.value}})
+        //
+        this.setState({damageMultipliers:[rawDamageMulti, elementDamageMulti, totalDamageMulti]}, () => {
             this.handleElementDamage()
             this.handleRawDamage()
         })
@@ -126,10 +260,10 @@ class App extends React.Component {
     // column 4
     handleRawDamage = () => {
         let criticalExpectation = this.state.criticalCorrection[0]
-        let criticalBoost = this.state.criticalCorrection[1]
+        let criticalBoost = 1.25 + 0.05 * this.state.criticalCorrection[1]
         // motion value, atk, hitZone
         let rawDamage = this.state.finalAttack
-        rawDamage *= this.state.motionValue
+        rawDamage *= this.state.ammoValues[0]
         rawDamage *= this.state.rawHitZone
         // damage multi.
         rawDamage *= this.state.damageMultipliers[0]
@@ -151,7 +285,7 @@ class App extends React.Component {
 
     handleElementDamage = () => {
         let criticalExpectation = this.state.criticalCorrection[0]
-        let criticalElement = this.state.criticalCorrection[2]
+        let criticalElement = 1 + 0.05 * this.state.criticalCorrection[2]
         // ev, atk, hitZone
         let elementDamage = this.state.finalElement
         elementDamage *= this.state.finalAttack
@@ -186,7 +320,8 @@ class App extends React.Component {
         document.getElementById('Weapon Attack').value = '330'
         this.setState({rawHitZone: 0.45})
         this.setState({elementHitZone: 0.25})
-        this.setState({criticalCorrection: [0, 1.25, 1]})
+        this.setState({criticalCorrection: [0, 0, 0]})
+
 
         this.handleFinalAttackElementUpdate()
     }
@@ -208,24 +343,17 @@ class App extends React.Component {
                 <h1 className="ui huge header center aligned purple">MH Rise: Sunbreak - Damage Calculator</h1>
                 <div className="ui grid">
                     <Column1
-                        // criticalCorrection={this.state.criticalCorrection}
                         handleFinalAttackElementUpdate={this.handleFinalAttackElementUpdate}
-                        handleMotionValueUpdate={this.handleMotionValueUpdate}
-                        handleElementValueUpdate={this.handleElementValueUpdate}
+                        handleAmmoTypeChange={this.handleAmmoTypeChange}
                         handleRapidFireUpdate={this.handleRapidFireUpdate}
                         handleRawHitZoneUpdate={this.handleRawHitZoneUpdate}
                         handleElementHitZoneUpdate={this.handleElementHitZoneUpdate}
-                        handleCriticalCorrectionUpdate={this.handleCriticalCorrectionUpdate}
-                        handleAttackBoosts={this.handleAttackBoosts}
+                        handleCriticalChange={this.handleCriticalChange}
+                        handleItemBoosts={this.handleItemBoosts}
                     />
-                    <Column2Skills
-                        attackMultiAdd={this.state.attackMultiAdd}
-                        elementMultiAdd={this.state.elementMultiAdd}
-                        handleAttackMultiAddUpdate={this.handleAttackMultiAddUpdate}
-                        handleElementMultiAddUpdate={this.handleElementMultiAddUpdate}
-                        handleFinalAttackElementUpdate={this.handleFinalAttackElementUpdate}
-                    />
+                    <Column2Skills handleSkills={this.handleSkills}/>
                     <Column3Multipliers
+                        handleFinalAttackElementUpdate={this.handleFinalAttackElementUpdate}
                         handleDamageMultipliersUpdate={this.handleDamageMultipliersUpdate}
                     />
                     <Column4Results
