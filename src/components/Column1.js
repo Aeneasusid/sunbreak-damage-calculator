@@ -14,20 +14,25 @@ class Column1 extends React.Component {
         return (
             <div className="four wide column">
                 <EquipmentInfo
+                    languageVersion={this.props.languageVersion}
                     handleFinalAttackElementUpdate={this.props.handleFinalAttackElementUpdate}
                 />
                 <AmmoType
+                    languageVersion={this.props.languageVersion}
                     handleAmmoTypeChange={this.props.handleAmmoTypeChange}
                     handleRapidFireUpdate={this.props.handleRapidFireUpdate}
                 />
                 <HitZone
+                    languageVersion={this.props.languageVersion}
                     handleRawHitZoneUpdate={this.props.handleRawHitZoneUpdate}
                     handleElementHitZoneUpdate={this.props.handleElementHitZoneUpdate}
                 />
                 <CriticalCorrection
+                    languageVersion={this.props.languageVersion}
                     handleCriticalChange={this.props.handleCriticalChange}
                 />
                 <ItemBoosts
+                    languageVersion={this.props.languageVersion}
                     handleItemBoosts={this.props.handleItemBoosts}
                 />
             </div>

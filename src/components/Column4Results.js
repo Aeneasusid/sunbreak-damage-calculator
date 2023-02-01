@@ -11,10 +11,12 @@ class Column4Results extends React.Component {
         return (
             <div className="four wide column" >
                 <FinalAttackElement
+                    languageVersion={this.props.languageVersion}
                     finalAttack={this.props.finalAttack}
                     finalElement={this.props.finalElement}
                 />
                 <DamageResults
+                    languageVersion={this.props.languageVersion}
                     rawDamage={this.props.rawDamage}
                     elementDamage={this.props.elementDamage}
                 />

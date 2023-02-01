@@ -9,7 +9,7 @@ class CriticalCorrection extends React.Component{
         return (
             <table className="ui compact table" onChange={e => this.props.handleCriticalChange(e)}>
                 <thead>
-                    <tr><th>Critical Expect. (%)</th><th><input id='Critical Expect. (%)' type="number" placeholder="0" step="5" min='0' max='100' size="6"/></th></tr>
+                    <tr><th>Critical Expect. (%)</th><th><input id='Critical Expect. (%)' type="number" placeholder="100" step="5" min='0' max='100' size="6"/></th></tr>
                     <tr><th>Critical Correction</th><th>Level</th></tr>
                 </thead>
                 <tbody>

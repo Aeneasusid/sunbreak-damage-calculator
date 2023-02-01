@@ -1,4 +1,5 @@
 import React from "react";
+import Menu from "./components/Menu";
 import Column1 from "./components/Column1";
 import Column2Skills from "./components/Column2Skills";
 import Column3Multipliers from "./components/Column3Multipliers";
@@ -7,6 +8,7 @@ import './App.css';
 
 class App extends React.Component {
     state = {
+        languageVersion:0, //['English','简体中文',''']
         ammo:{
                 '4 Elements':[16,40], '4 Pierce Elements':[10,22],
                 'Pierce 2':[7,0], 'Pierce 3':[9,0],
@@ -61,6 +63,14 @@ class App extends React.Component {
         finalElement: 0,
         rawDamage:0,
         elementDamage:0,
+    }
+
+    // Menu
+    handleLanguageVersion = (language) => {
+        switch (language) {
+            case 'English': this.setState({languageVersion: 0});break;
+            case '简体中文': this.setState({languageVersion: 1});break;
+        }
     }
 
     // column 1
@@ -320,9 +330,8 @@ class App extends React.Component {
         document.getElementById('Weapon Attack').value = '330'
         this.setState({rawHitZone: 0.45})
         this.setState({elementHitZone: 0.25})
-        this.setState({criticalCorrection: [0, 0, 0]})
-
-
+        this.setState({criticalCorrection: [1, 0, 0]})
+        //
         this.handleFinalAttackElementUpdate()
     }
 
@@ -339,10 +348,14 @@ class App extends React.Component {
 
     render() {
         return (
-            <div className="ui container">
-                <h1 className="ui huge header center aligned purple">MH Rise: Sunbreak - Damage Calculator</h1>
-                <div className="ui grid">
+            <div>
+                <Menu
+                    languageVersion={this.state.languageVersion}
+                    handleLanguageVersion={this.handleLanguageVersion}
+                />
+                <div className="ui container grid">
                     <Column1
+                        languageVersion={this.state.languageVersion}
                         handleFinalAttackElementUpdate={this.handleFinalAttackElementUpdate}
                         handleAmmoTypeChange={this.handleAmmoTypeChange}
                         handleRapidFireUpdate={this.handleRapidFireUpdate}
@@ -351,12 +364,17 @@ class App extends React.Component {
                         handleCriticalChange={this.handleCriticalChange}
                         handleItemBoosts={this.handleItemBoosts}
                     />
-                    <Column2Skills handleSkills={this.handleSkills}/>
+                    <Column2Skills
+                        languageVersion={this.state.languageVersion}
+                        handleSkills={this.handleSkills}
+                    />
                     <Column3Multipliers
+                        languageVersion={this.state.languageVersion}
                         handleFinalAttackElementUpdate={this.handleFinalAttackElementUpdate}
                         handleDamageMultipliersUpdate={this.handleDamageMultipliersUpdate}
                     />
                     <Column4Results
+                        languageVersion={this.state.languageVersion}
                         finalAttack={this.state.finalAttack}
                         finalElement={this.state.finalElement}
                         rawDamage={this.state.rawDamage}
@@ -364,7 +382,8 @@ class App extends React.Component {
                     />
                 </div>
             </div>
-        );
+
+        )
     }
 }
 

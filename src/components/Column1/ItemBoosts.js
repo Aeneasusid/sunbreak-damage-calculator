@@ -3,12 +3,23 @@ import React from "react";
 class ItemBoosts extends React.Component{
     constructor() {
         super();
+        this.state = {
+            items:['Items', '道具'],
+            // items:['Items', '道具'],
+            // items:['Items', '道具'],
+            // items:['Items', '道具'],
+            // items:['Items', '道具'],
+            // items:['Items', '道具'],
+            // items:['Items', '道具'],
+            // items:['Items', '道具'],
+            // items:['Items', '道具'],
+        }
     }
 
     render() {
         return (
             <table onChange={this.props.handleItemBoosts} className="ui compact table">
-                <thead><tr><th>Items</th><th>Boosts</th></tr></thead>
+                <thead><tr><th>{this.state.items[this.props.languageVersion]}</th><th>Boosts</th></tr></thead>
                 <tbody>
                 <tr><td>Petalace</td><td><input className='itemBoost' type="number" placeholder="0" step="1" min='0' max='20' size="6"/></td></tr>
                 <tr><td>Power Charm&Talon</td><td><input className='itemBoost' type="number" placeholder="0" step="15" min='0' max='15' size="6"/></td></tr>
