@@ -10,7 +10,7 @@ class Menu extends React.Component{
             bow:['Bow','弓'],
             greatSword:['Great Sword','大剑'],
             longSword:['Long Sword','太刀'],
-            swordAndShield:['Sword And Shield','片手剑'],
+            swordAndShield:['Sword & Shield','片手剑'],
             dualBlades:['Dual Blades','双刀'],
             hammer:['Hammer','大锤'],
             huntingHorn:['Hunting Horn','狩猎笛'],
@@ -25,17 +25,22 @@ class Menu extends React.Component{
     render() {
         return (
             <div>
-                <h1 className="ui large header center aligned purple" style={{transform:'translateY(40%)'}}>{this.state.title[this.props.languageVersion]}</h1>
+                <h1 className="ui large header center aligned purple" style={{transform:'translateY(30%)'}}>{this.state.title[this.props.languageVersion]}</h1>
                 <div className="ui tabular menu">
                     <div className="ui left menu">
-                        {/*<select className="ui selection dropdown">*/}
-                        <select className="selection dropdown">
+                        <select className="ui selection dropdown" onChange={e => this.props.handleLanguageVersion(e.target.value)}>
+                            <option value="简体中文">简体中文</option>
+                            <option value="English">English</option>
+                        </select>
+                    </div>
+                    <div className="ui left menu">
+                        <select className="ui selection dropdown" onChange={e => this.props.handleWeapon(e.target.value)}>
                             <option value="Light Bow Gun">{this.state.lightBowGun[this.props.languageVersion]}</option>
                             <option value="Heavy Bow Gun">{this.state.heavyBowGun[this.props.languageVersion]}</option>
                             <option value="Bow">{this.state.bow[this.props.languageVersion]}</option>
                             <option value="Great Sword">{this.state.greatSword[this.props.languageVersion]}</option>
                             <option value="Long Sword">{this.state.longSword[this.props.languageVersion]}</option>
-                            <option value="Sword And Shield">{this.state.swordAndShield[this.props.languageVersion]}</option>
+                            <option value="Sword & Shield">{this.state.swordAndShield[this.props.languageVersion]}</option>
                             <option value="Dual Blades">{this.state.dualBlades[this.props.languageVersion]}</option>
                             <option value="Hammer">{this.state.hammer[this.props.languageVersion]}</option>
                             <option value="Hunting Horn">{this.state.huntingHorn[this.props.languageVersion]}</option>
@@ -44,12 +49,6 @@ class Menu extends React.Component{
                             <option value="Insect Glaive">{this.state.insectGlaive[this.props.languageVersion]}</option>
                             <option value="Lance">{this.state.lance[this.props.languageVersion]}</option>
                             <option value="Gun Lance">{this.state.gunLance[this.props.languageVersion]}</option>
-                        </select>
-                    </div>
-                    <div className="right menu">
-                        <select className="selection dropdown" onChange={e => this.props.handleLanguageVersion(e.target.value)}>
-                            <option value="English">English</option>
-                            <option value="简体中文">简体中文</option>
                         </select>
                     </div>
                 </div>

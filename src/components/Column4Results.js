@@ -1,6 +1,7 @@
 import React from "react";
 import FinalAttackElement from "./Column4Results/FinalAttackElement";
 import DamageResults from "./Column4Results/DamageResults";
+import InfoBoard from "./Column4Results/InfoBoard";
 
 class Column4Results extends React.Component {
     constructor(props) {
@@ -20,6 +21,7 @@ class Column4Results extends React.Component {
                     rawDamage={this.props.rawDamage}
                     elementDamage={this.props.elementDamage}
                 />
+                <InfoBoard  languageVersion={this.props.languageVersion}/>
             </div>
         )
     }

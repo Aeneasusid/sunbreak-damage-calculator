@@ -4,6 +4,8 @@ import AmmoType from "./Column1/AmmoType";
 import HitZone from "./Column1/Hitzone";
 import CriticalCorrection from "./Column1/CriticalCorrection";
 import ItemBoosts from "./Column1/ItemBoosts";
+import MotionValue from "./Column1/MotionValue";
+import SharpnessCorrection from "./Column1/SharpnessCorrection";
 
 class Column1 extends React.Component {
     constructor(props) {
@@ -14,10 +16,22 @@ class Column1 extends React.Component {
         return (
             <div className="four wide column">
                 <EquipmentInfo
+                    weapon={this.props.weapon}
                     languageVersion={this.props.languageVersion}
                     handleFinalAttackElementUpdate={this.props.handleFinalAttackElementUpdate}
                 />
+                <SharpnessCorrection
+                    weapon={this.props.weapon}
+                    languageVersion={this.props.languageVersion}
+                />
                 <AmmoType
+                    weapon={this.props.weapon}
+                    languageVersion={this.props.languageVersion}
+                    handleAmmoTypeChange={this.props.handleAmmoTypeChange}
+                    handleRapidFireUpdate={this.props.handleRapidFireUpdate}
+                />
+                <MotionValue
+                    weapon={this.props.weapon}
                     languageVersion={this.props.languageVersion}
                     handleAmmoTypeChange={this.props.handleAmmoTypeChange}
                     handleRapidFireUpdate={this.props.handleRapidFireUpdate}

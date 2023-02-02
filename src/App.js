@@ -8,19 +8,20 @@ import './App.css';
 
 class App extends React.Component {
     state = {
-        languageVersion:0, //['English','简体中文',''']
+        languageVersion:0, //['English','简体中文','']
+        weapon:'Light Bow Gun',
         ammo:{
-                '4 Elements':[16,40], '4 Pierce Elements':[10,22],
-                'Pierce 2':[7,0], 'Pierce 3':[9,0],
-                'Normal 2':[22,0], 'Normal 3':[34,0],
-                'Spread 2':[7,0], 'Spread 3':[10,0],
-                'Shrapnel 2':[5,0],'Shrapnel 3':[5,0],
+                'FireWaterIceThunder':[16,40], 'PierceFireWaterIceThunder':[10,22], 'Dragon':[48,80], 'Pierce Dragon':[20,44],
+                'Pierce 1':[7,0], 'Pierce 2':[7,0], 'Pierce 3':[9,0],
+                'Normal 1':[16,0],'Normal 2':[22,0], 'Normal 3':[34,0],
+                'Spread 1':[7,0], 'Spread 2':[7,0], 'Spread 3':[10,0],
+                'Shrapnel 1':[6,0], 'Shrapnel 2':[5,0],'Shrapnel 3':[5,0],
         },
         ammoValues: [10, 22],// [motionValue, elementValue]
         rapidAmmoCorrection: ['Rapid Fire', 0.7, 0.5],
         rawHitZone:0,
         elementHitZone:0,
-        criticalCorrection: [],// [expectation %, boostLevel, elementLevel]
+        criticalCorrection: [1, 0 ,0],// [expectation %, boostLevel, elementLevel]
         itemBoosts:0,
         //
         attackSkills: {
@@ -66,6 +67,7 @@ class App extends React.Component {
     }
 
     // Menu
+    handleWeapon = (weapon) => {this.setState({weapon: weapon})}
     handleLanguageVersion = (language) => {
         switch (language) {
             case 'English': this.setState({languageVersion: 0});break;
@@ -122,21 +124,11 @@ class App extends React.Component {
     }
 
     handleAmmoTypeChange = (ammoType) => {
+
         this.setState({ammoValues: this.state.ammo[ammoType]}, () => {
             this.handleRawDamage()
             this.handleFinalAttackElementUpdate()
         })
-        // this.props.handleMotionValueUpdate(ammoValues[0])
-        // this.props.handleElementValueUpdate(ammoValues[1])
-        // let ammo = this.state.ammo
-        // let ammoValues = []
-        // for (let i=0; i<ammo.length; i++) {
-        //     if (ammo[i][0] === e.target.value) {
-        //         ammoValues = [ammo[i][1], ammo[i][2]]
-        //     }
-        // }
-        // this.props.handleMotionValueUpdate(ammoValues[0])
-        // this.props.handleElementValueUpdate(ammoValues[1])
     }
 
     handleRapidFireUpdate = value => {
@@ -147,15 +139,11 @@ class App extends React.Component {
     }
     //
     handleRawHitZoneUpdate = rawHitZone => {
-        this.setState({rawHitZone: rawHitZone}, () => {
-            this.handleRawDamage()
-        })
+        this.setState({rawHitZone: rawHitZone}, () => {this.handleRawDamage()})
     }
 
     handleElementHitZoneUpdate = elementHitZone => {
-        this.setState({elementHitZone: elementHitZone}, () => {
-            this.handleElementDamage()
-        })
+        this.setState({elementHitZone: elementHitZone}, () => {this.handleElementDamage()})
     }
 
     //
@@ -331,7 +319,10 @@ class App extends React.Component {
         this.setState({rawHitZone: 0.45})
         this.setState({elementHitZone: 0.25})
         this.setState({criticalCorrection: [1, 0, 0]})
-        //
+        this.setState({languageVersion: 1})
+
+        // console.log('geo', navigator.geolocation)
+
         this.handleFinalAttackElementUpdate()
     }
 
@@ -352,9 +343,11 @@ class App extends React.Component {
                 <Menu
                     languageVersion={this.state.languageVersion}
                     handleLanguageVersion={this.handleLanguageVersion}
+                    handleWeapon={this.handleWeapon}
                 />
                 <div className="ui container grid">
                     <Column1
+                        weapon={this.state.weapon}
                         languageVersion={this.state.languageVersion}
                         handleFinalAttackElementUpdate={this.handleFinalAttackElementUpdate}
                         handleAmmoTypeChange={this.handleAmmoTypeChange}
@@ -369,6 +362,7 @@ class App extends React.Component {
                         handleSkills={this.handleSkills}
                     />
                     <Column3Multipliers
+                        weapon={this.state.weapon}
                         languageVersion={this.state.languageVersion}
                         handleFinalAttackElementUpdate={this.handleFinalAttackElementUpdate}
                         handleDamageMultipliersUpdate={this.handleDamageMultipliersUpdate}

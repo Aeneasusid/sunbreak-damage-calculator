@@ -18,8 +18,8 @@ class Column2Skills extends React.Component {
             resentment:['Resentment', '怨恨'],
             derelictionRed:['Dereliction Red', '伏魔耗命（红书）'],
             derelictionBlue:['Dereliction Blue', '伏魔耗命（蓝书）'],
-            mailOfHellfireRed:['Mail Of HellfireRed', '夜铠修罗（红书）'],
-            mailOfHellfireBlue:['Mail Of HellfireBlue', '夜铠修罗（蓝书）'],
+            mailOfHellfireRed:['Mail Of HellfireRed', '业铠修罗（红书）'],
+            mailOfHellfireBlue:['Mail Of HellfireBlue', '业铠修罗（蓝书）'],
             elementsAttack:['Elements Attack', '属性攻击强化'],
             kushaTeoBlessing:['Kusha/Teo Blessing', '钢/炎恩惠'],
             stormsoul:['Stormsoul', '风雷合一'],
@@ -29,7 +29,7 @@ class Column2Skills extends React.Component {
             coalescence:['Coalescence', '因祸得福'],
             fortify:['Fortify', '不屈'],
             dragonheart:['Dragonheart', '龙气活性'],
-            heroics:['Heroics', '技能'],
+            heroics:['Heroics', '火场怪力'],
         }
     }
 
