@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/sunbreak-damage-calculator/static/css/main.33617585.css",
-    "main.js": "/sunbreak-damage-calculator/static/js/main.dc43b2cc.js",
+    "main.js": "/sunbreak-damage-calculator/static/js/main.4d7f9c7a.js",
     "static/media/brand-icons.svg": "/sunbreak-damage-calculator/static/media/brand-icons.6729d29753e000c17489.svg",
     "static/media/icons.svg": "/sunbreak-damage-calculator/static/media/icons.62d9dae4e0040e81c980.svg",
     "static/media/outline-icons.svg": "/sunbreak-damage-calculator/static/media/outline-icons.9c4845b4b41ef40a22fa.svg",
@@ -20,10 +20,10 @@
     "static/media/outline-icons.woff2": "/sunbreak-damage-calculator/static/media/outline-icons.687a4990ea22bb1a49d4.woff2",
     "index.html": "/sunbreak-damage-calculator/index.html",
     "main.33617585.css.map": "/sunbreak-damage-calculator/static/css/main.33617585.css.map",
-    "main.dc43b2cc.js.map": "/sunbreak-damage-calculator/static/js/main.dc43b2cc.js.map"
+    "main.4d7f9c7a.js.map": "/sunbreak-damage-calculator/static/js/main.4d7f9c7a.js.map"
   },
   "entrypoints": [
     "static/css/main.33617585.css",
-    "static/js/main.dc43b2cc.js"
+    "static/js/main.4d7f9c7a.js"
   ]
 }
