@@ -5,8 +5,8 @@ class HitZone extends React.Component{
         super();
         this.state = {
             hitZone:['Hit Zone', '肉质'],
-            raw:['Raw','物理肉质'],
-            element:['Element', '属性肉质']
+            raw:['Raw','物理吸收'],
+            element:['Element', '属性吸收']
         }
     }
 

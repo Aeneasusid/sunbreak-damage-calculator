@@ -10,6 +10,7 @@ class App extends React.Component {
     state = {
         languageVersion:0, //['English','简体中文','']
         weapon:'Light Bow Gun',
+        // column 1
         ammo:{
                 'FireWaterIceThunder':[16,40], 'PierceFireWaterIceThunder':[10,22], 'Dragon':[48,80], 'Pierce Dragon':[20,44],
                 'Pierce 1':[7,0], 'Pierce 2':[7,0], 'Pierce 3':[9,0],
@@ -23,7 +24,7 @@ class App extends React.Component {
         elementHitZone:0,
         criticalCorrection: [1, 0 ,0],// [expectation %, boostLevel, elementLevel]
         itemBoosts:0,
-        //
+        // Column 2
         attackSkills: {
             attackBoosts:[['attackBoosts'],[1,3],[1,6],[1,9],[1.05,7],[1.06,8],[1.08,9],[1.1,10]],
             agitator:[['agitator'],[1,4],[1,8],[1,12],[1,16],[1,20]],
@@ -57,9 +58,10 @@ class App extends React.Component {
         },
         attackMultiAdd: [], // ['xxx skill',1,0],
         elementMultiAdd: [],
-        //
+        // Column 3
+        finalAtkEleMultipliers:[1,1],
         damageMultipliers:[1,[1,1,1],1],// [raw, [ele,e. exploit,e. e. rampage], total]
-        //
+        // Column 4
         finalAttack:0,
         finalElement: 0,
         rawDamage:0,
@@ -67,7 +69,13 @@ class App extends React.Component {
     }
 
     // Menu
-    handleWeapon = (weapon) => {this.setState({weapon: weapon})}
+    handleWeapon = (e) => {
+        this.setState({weapon: e.target.id})
+        document.querySelectorAll('.item').forEach(ele => {
+            if (ele.classList.contains('active')) {ele.classList.remove('active')}
+        })
+        e.target.classList.add('active')
+    }
     handleLanguageVersion = (language) => {
         switch (language) {
             case 'English': this.setState({languageVersion: 0});break;
@@ -98,11 +106,10 @@ class App extends React.Component {
         }
         // handle Attack Power
         finalAttack *= attackMultis
+        // final multipliers-atk
+        finalAttack *= this.state.finalAtkEleMultipliers[0]
         finalAttack += attackAdds
         finalAttack += this.state.itemBoosts
-        // another multipliers-atk
-        if (document.getElementById('melodyAttackUp').value > 1) {finalAttack *= 1.1}
-        if (document.getElementById('fanningManeuver').value > 1) {finalAttack *= 1.1}
         // round specially
         finalAttack = Math.floor(finalAttack + 0.1)
         this.setState({finalAttack: finalAttack}, () => {
@@ -112,10 +119,10 @@ class App extends React.Component {
         // handle Element Value
         if  (finalElement > 0) {
             finalElement *= elementMultis
+            // final multipliers-ele
+            finalElement *= this.state.finalAtkEleMultipliers[1]
             finalElement += elementAdds
         }
-        // another multipliers-ele
-        if (document.getElementById('melodyElementalBoost').value > 1) {finalElement *= 1.1}
         // round specially
         finalElement = Math.floor(finalElement + 0.1)
         this.setState({finalElement: finalElement}, () => {
@@ -124,7 +131,6 @@ class App extends React.Component {
     }
 
     handleAmmoTypeChange = (ammoType) => {
-
         this.setState({ammoValues: this.state.ammo[ammoType]}, () => {
             this.handleRawDamage()
             this.handleFinalAttackElementUpdate()
@@ -138,13 +144,8 @@ class App extends React.Component {
         })
     }
     //
-    handleRawHitZoneUpdate = rawHitZone => {
-        this.setState({rawHitZone: rawHitZone}, () => {this.handleRawDamage()})
-    }
-
-    handleElementHitZoneUpdate = elementHitZone => {
-        this.setState({elementHitZone: elementHitZone}, () => {this.handleElementDamage()})
-    }
+    handleRawHitZoneUpdate = rawHitZone => {this.setState({rawHitZone: rawHitZone}, () => {this.handleRawDamage()})}
+    handleElementHitZoneUpdate = elementHitZone => {this.setState({elementHitZone: elementHitZone}, () => {this.handleElementDamage()})}
 
     //
     handleCriticalChange = (e) => {
@@ -227,6 +228,17 @@ class App extends React.Component {
     }
 
     // column 3
+    handleFinalAtkEleMultipliersUpdate = () => {
+        let [finalAtkMulti, finalEleMulti] = [1, 1]
+        let atkMultiElements = document.querySelectorAll('.final-atk-multi')
+        let eleMultiElements = document.querySelectorAll('.final-ele-multi')
+        atkMultiElements.forEach(e => {if (e.value) {finalAtkMulti *= e.value}})
+        eleMultiElements.forEach(e => {if (e.value) {finalEleMulti *= e.value}})
+        this.setState({finalAtkEleMultipliers:[finalAtkMulti, finalEleMulti]}, () => {
+            this.handleFinalAttackElementUpdate()
+        })
+    }
+
     handleDamageMultipliersUpdate = () => {
         let rawDamageMulti = 1
         let elementDamageMulti = [1, 1, 1]
@@ -272,11 +284,7 @@ class App extends React.Component {
         }
         // critical correction
         rawDamage += rawDamage * (criticalBoost - 1) * criticalExpectation
-        if (criticalExpectation === 0 || criticalExpectation === 1) {
-            rawDamage = Math.round(rawDamage/100)
-        } else {
-            rawDamage = Math.round(rawDamage) / 100
-        }
+        rawDamage = Math.round(rawDamage/100)
         //
         this.setState({rawDamage:rawDamage})
     }
@@ -300,11 +308,7 @@ class App extends React.Component {
         }
         // critical correction
         elementDamage += elementDamage * (criticalElement - 1) * criticalExpectation
-        if (criticalExpectation === 0 || criticalExpectation === 1) {
-            elementDamage = Math.round(elementDamage/100)
-        } else {
-            elementDamage = Math.round(elementDamage) / 100
-        }
+        elementDamage = Math.round(elementDamage/100)
         // sometimes still 1 point ele damage
         if (elementDamage > 0 && elementDamage < 0.5) {
             elementDamage = 1
@@ -319,11 +323,20 @@ class App extends React.Component {
         this.setState({rawHitZone: 0.45})
         this.setState({elementHitZone: 0.25})
         this.setState({criticalCorrection: [1, 0, 0]})
-        this.setState({languageVersion: 1})
-
-        // console.log('geo', navigator.geolocation)
-
+        this.setState({languageVersion: 0})
+        //
         this.handleFinalAttackElementUpdate()
+        // use geoLocation to set language
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) =>{
+                let longitude = position.coords.longitude
+                if (position.coords.longitude > 73.6 && position.coords.longitude < 135.5) {
+                    this.setState({languageVersion: 1})
+                } else {
+                    this.setState({languageVersion: 0})
+                }
+            })
+        }
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -364,7 +377,7 @@ class App extends React.Component {
                     <Column3Multipliers
                         weapon={this.state.weapon}
                         languageVersion={this.state.languageVersion}
-                        handleFinalAttackElementUpdate={this.handleFinalAttackElementUpdate}
+                        handleFinalAtkEleMultipliersUpdate={this.handleFinalAtkEleMultipliersUpdate}
                         handleDamageMultipliersUpdate={this.handleDamageMultipliersUpdate}
                     />
                     <Column4Results
@@ -373,6 +386,7 @@ class App extends React.Component {
                         finalElement={this.state.finalElement}
                         rawDamage={this.state.rawDamage}
                         elementDamage={this.state.elementDamage}
+                        criticalExpectation={this.state.criticalCorrection[0]}
                     />
                 </div>
             </div>

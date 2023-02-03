@@ -14,7 +14,7 @@ class Column1 extends React.Component {
 
     render() {
         return (
-            <div className="four wide column">
+            <div className="sixteen wide mobile eight wide tablet four wide computer column">
                 <EquipmentInfo
                     weapon={this.props.weapon}
                     languageVersion={this.props.languageVersion}

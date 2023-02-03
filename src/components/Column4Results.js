@@ -10,7 +10,7 @@ class Column4Results extends React.Component {
 
     render() {
         return (
-            <div className="four wide column" >
+            <div className="sixteen wide mobile eight wide tablet four wide computer column" >
                 <FinalAttackElement
                     languageVersion={this.props.languageVersion}
                     finalAttack={this.props.finalAttack}
@@ -20,6 +20,7 @@ class Column4Results extends React.Component {
                     languageVersion={this.props.languageVersion}
                     rawDamage={this.props.rawDamage}
                     elementDamage={this.props.elementDamage}
+                    criticalExpectation={this.props.criticalExpectation}
                 />
                 <InfoBoard  languageVersion={this.props.languageVersion}/>
             </div>

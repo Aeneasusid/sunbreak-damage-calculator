@@ -8,8 +8,12 @@
 
 
 
-0.9 players test, optimize code,media query, web api - geography,
+[comment]: <> (0.9)
+[comment]: <> (players test, optimize code,)
+[comment]: <> (media query, web api - geography,)
+
+water, fire blight
 
 1.1 GS, bow
 
-2.0 LBG&HBG damages in 60s
+2.0 MultiplierLBG&HBG damages in 60s

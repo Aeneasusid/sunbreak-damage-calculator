@@ -12,7 +12,7 @@ class ItemBoosts extends React.Component{
             // demondrug:['Demondrug', '鬼人药'],
             megaDemondrug:['Mega Demondrug', '大鬼人药'],
             demonPowder:['Demon Powder', '鬼人粉尘'],
-            others:['Others +/-', '其它 +/-'],
+            others:['Other Attack + / -', '其它攻击 + / -'],
         }
     }
 
